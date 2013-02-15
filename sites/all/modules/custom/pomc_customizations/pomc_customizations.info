@@ -1,0 +1,6 @@
+name = POMC Customizations
+description = "Paste On My City customized code shall rest here!"
+package = Paste On My City Custom Code
+core = 7.x
+
+

@@ -1,0 +1,62 @@
+<?php
+
+/**
+ * @file
+ * Installation file for invite customization module.
+ */
+ 
+/**
+ * Implements hook_schema().
+ */
+function invite_custom_schema() {
+  $schema = array();
+  
+  $schema['invite_friends_list'] = array(
+    'description' => 'The table for invite friends list',
+    'fields' => array(
+      'iflid' => array(
+        'description' => 'The primary identifier for a invite friends list',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'method' => array(
+        'description' => 'Stores the method name of service for get friends list',
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'mail_id' => array(
+        'description' => 'The email_address or username used.',
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'contacts_count' => array(
+        'description' => 'The number of contacts that the engine retrieved from the provider.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'small',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'uid' => array(
+        'description' => 'Stores the user id of the inviter friends list',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'friends' => array(
+        'description' => 'Stores the list of friends',
+        'type' => 'blob',
+        'size' => 'big',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('iflid'),
+  );
+  
+  return $schema;
+}

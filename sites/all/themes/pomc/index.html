@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Paste On My City</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/fullscreenr.css" rel="stylesheet" media="screen"/>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/fullscreenr.js"></script>
+    <script type="text/javascript">
+        <!--
+            // You need to specify the size of your background image here (could be done automatically by some PHP code)
+            var FullscreenrOptions = {  width: 990, height: 660, bgID: '#bgimg' };
+            // This will activate the full screen background!
+            jQuery.fn.fullscreenr(FullscreenrOptions);
+        //-->
+    </script>
+</head>
+<body>
+<!-- This is the background image -->
+<img id="bgimg" src="img/bg.jpg" />
+<!-- Here the "real" body starts -->
+<div id="realBody">
+    <div class="container">
+        <h1><a href="#"><img src="img/landingLogo.png"/></a></h1>
+    </div>
+    <div id="highlightBar">
+        <div class="container clearfix">
+            <p class="desc">Entire social interactions amongst city dwellers</p>
+            <p class="action">
+            <a href="#login" role="button" class="btn btn-large btn-warning" data-toggle="modal">Login</a>
+            <span>or</span>
+                <a href="#register" role="button" class="btn btn-large btn-success" data-toggle="modal">Register</a>
+            </p>
+        </div>
+    </div>
+    <footer>&copy; 2012 Paste on my City</footer>
+</div><!-- Here the "real" body ends -->
+
+<!-- Login Modal -->
+<div id="login" class="modal modal-landing hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      <h2 class="form-signin-heading">Please sign in</h2>
+  </div>
+  <div class="modal-body">
+      <form class="form-signin">
+           <input type="email" class="input-block-level" placeholder="Email address">
+           <input type="password" class="input-block-level" placeholder="Password">
+          <div class="control-group">
+              <div class="controls clearfix">
+                  <label class="checkbox pull-left">
+                      <input type="checkbox"> Remember me
+                  </label>
+                  <a href="#forgot" class="pull-right">Forgot Password?</a>
+              </div>
+          </div>
+
+          <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+
+
+         </form>
+  </div>
+</div>
+
+<!-- Register Modal -->
+<div id="register" class="modal modal-landing hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      <h2 class="form-signin-heading">Please register</h2>
+  </div>
+  <div class="modal-body">
+      <form class="form-signin">
+         <input type="text" class="input-block-level" placeholder="Full Name">
+         <input type="email" class="input-block-level" placeholder="Email address">
+         <input type="password" class="input-block-level" placeholder="Password">
+         <button class="btn btn-large btn-primary" type="submit">Register</button>
+       </form>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+.action_button {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: #D8D8D8 url(-bcb76e8ee476f5c8.gif) repeat-x top left;
+  border: 1px solid #BBB;
+  border-bottom: 1px solid #999;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: .9em;
+  display: inline-block;
+  padding: 3px 10px;
+  text-align: center;
+  text-shadow: 0 1px #F0F0F0;
+}
+.hideme {
+  display: none !important;
+}
+a.action_button, a.action_button:hover {
+  color: #333;
+}
+a {
+  text-decoration: none !important;
+}
+.side_col {
+  float: right;
+  position: relative;
+  bottom: 32px;
+  right: 2px;
+}
+.col {
+  /*float: left;*/
+  margin: 0px 10px 0px 0px;
+}
+.contact_list_item {
+  /*
+  float: left;*/
+  border-top: 1px solid #EAEAEA;
+  padding: 10px 0px;
+  width: 100%;
+}
+

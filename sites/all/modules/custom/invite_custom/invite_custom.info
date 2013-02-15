@@ -1,0 +1,7 @@
+name = Invite customization
+description = Allows your users to send and track invitations to join your site.
+core = 7.x
+package = Invite
+dependencies[] = invite
+dependencies[] = token
+

@@ -1,0 +1,77 @@
+body {
+	overflow:hidden;
+	padding:0;margin:0;
+	height:100%;width:100%;
+    color: #fff;
+}
+
+#bgimg {
+	position:absolute;
+	z-index: -1;
+}
+
+#realBody{
+	position:absolute;
+	z-index: 5;
+	overflow:auto;
+	height:100%;width:100%;
+	background: url('../img/raster.png');
+
+}
+
+.container{
+    position: relative;
+    width: 940px;
+    margin: 0 auto;
+}
+h1 {
+    position:absolute;
+    z-index: 10;
+    left:0px;
+    top:0px;
+}
+#highlightBar {
+    position:absolute;
+    top: 80px;
+    width:100%;
+    background-color: rgba(0,0,0,0.7);
+    padding:16px 0 8px 0;
+
+}
+.desc{
+    float:left;
+    padding-top: 10px;
+    font-size: 24px;
+    line-height: 1;
+}
+
+.action{
+    float:left;
+    font-size: 24px;
+    padding-left: 60px;
+}
+.action span{
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 16px;
+}
+
+.action button{
+
+}
+.modal-landing{
+    color:#111;
+    width:400px;
+    margin-left: -200px;
+}
+.pull-right{
+    min-height: 20px;
+}
+footer{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    background-color: rgba(0,0,0,0.7);
+    padding:5px 0;
+    text-align: center;
+}

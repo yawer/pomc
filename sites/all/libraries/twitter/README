@@ -1,0 +1,12 @@
+This library provides PHP support for the Twitter REST API 1.1.
+
+It is used by Drupal's Twitter module http://drupal.org/project/twitter. OAuth
+authentication is made thanks to http://drupal.org/project/twitter
+
+The library has been moved away from the module so it can be used by other
+Twitter related modules, and even other PHP projects which do not use Drupal.
+
+If you want to use it for your own PHP project, just change
+variable_get('twitter_api', TWITTER_API) by http://api.twitter.com and
+the drupal_http_request by any request implementation (you could use CURL, for
+example).

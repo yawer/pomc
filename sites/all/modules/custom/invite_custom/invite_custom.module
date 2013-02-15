@@ -1,0 +1,160 @@
+<?php
+
+function invite_custom_menu() {
+  $items = array();
+  
+  $items['user/%user/invite-friends'] = array(
+    'title' => t("Invite Friends"),
+    'page callback' => 'invite_friends',
+    'access arguments' => array('access content', 1),
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['ajax/invite_frined/%'] = array(
+    'title' => t("Invite Friends"),
+    'page callback'=> 'ajax_invite_frined',
+    'page arguments' => array(2),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  
+  return $items;
+}
+function invite_custom_init() {
+  if (arg(2) == "invite-friends") {
+    drupal_add_js(drupal_get_path("module", "invite_custom") . "/js/invite_custom.js");
+    drupal_add_css(drupal_get_path("module", "invite_custom") . "/css/invite_custom.css");
+  }
+}
+
+function invite_custom_block_info_alter(&$blocks, $theme, $code_blocks) {
+  if (isset($blocks['invite']['invite'])) {
+    $blocks['invite']['invite']['region'] = t("sidebar_second");
+    $blocks['invite']['invite']['visibility'] = 1;
+    $blocks['invite']['invite']['pages'] = "user/*/invite-friends";
+    $blocks['invite']['invite']['weight'] = 0;
+  }
+}
+function invite_custom_form_contact_importer_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_state['storage']['step'] == 'select_contacts') {
+    $form['#contact_email'] = $form_state['storage']['email'];
+    $form['#contact_provider'] = $form_state['storage']['provider']['provider_name'];
+    foreach ($form['confirmed_list']['#options'] as &$contact) {
+      $contact = str_replace("&lt;", "<br/><span class='contact-email-id'>", $contact);
+      $contact = str_replace("&gt;", "</span>", $contact);
+    }
+    $form['#submit'][] = "invite_custom_contacts_importing_submit";
+  }
+}
+function invite_custom_form_invite_form_alter(&$form, &$form_state, $form_id) {
+  if (isset($_REQUEST['email'])) {
+    if (is_array($_REQUEST['email'])) {
+      $form['email']['#default_value'] = implode(",", $_REQUEST['email']);
+    }
+    else {
+      $form['email']['#default_value'] = $_REQUEST['email'];
+    }
+  }
+  $form['subject_markup']['#attributes'] = array("class" => array("hideme"));
+}
+function invite_custom_form_alter(&$form, &$form_state, $form_id) {
+  
+}
+
+function invite_custom_contacts_importing_submit(&$form, &$form_state) {
+  global $user;
+  $invite_contacts = array(
+    'method' => $form_state['storage']['provider']['provider_name'],
+    'mail_id' => $form_state['storage']['email'],
+    'contacts_count' => count($form_state['values']['confirmed_list']),
+    'uid' => $user->uid,
+    'friends' => serialize($form_state['storage']['contacts']),
+  );
+
+  $query = (bool)db_select("invite_friends_list", "ifl")->fields("ifl")->condition("uid", $user->uid)->condition("mail_id", $form_state['storage']['email'])->execute()->fetchAssoc();
+  if ($query) {
+    $result = drupal_write_record("invite_friends_list", $invite_contacts, array("uid", "mail_id"));
+  }
+  else {
+    $result = drupal_write_record("invite_friends_list", $invite_contacts);
+  }
+
+  if ($result) {
+    drupal_set_message(check_plain("Seccessfully Imported your Contacts"), "status");
+  }
+  else {
+    drupal_set_message(check_plain("Failed Imported your Contacts"), "error");
+  }
+}
+function invite_friends() {
+  global $user;
+  
+  $user_friends = get_user_friends_list($user);
+  $friends_list = theme("invite_friends_list", array("invite_friends" => $user_friends)). theme("pager");
+  if (variable_get("contact_importer_modal","none") == "overlay" && module_exists("overlay")) {
+    return $friends_list . l("Import Other Address Book", "contact_importer_overlay", array("attributes" => array("class" => array("import-contact-link"))));
+  }
+  else {
+    return $friends_list . render(drupal_get_form("invite_friends_form"));
+  }
+  return "Hello";
+}
+
+function invite_custom_theme() {
+  return array(
+    "invite_friends_list" => array(
+      'variables' => array("fiends" => array()),
+      'template' => 'invite-friends',
+      'path' => drupal_get_path("module", "invite_custom"),
+    ),
+  );
+}
+
+function invite_friends_form($form, &$form_state) {
+  global $base_url;
+  $form = array();
+  $form['#action'] = $base_url . '/contact_importer';
+  $form['submit'] = array('#type' => 'submit', '#value' => 'Import Other Address Book');
+  return $form;
+}
+function get_user_friends_list($account) {
+  $friends_list = array();
+  $results = db_select("invite_friends_list", "ifl")
+                ->fields("ifl")
+                ->extend('PagerDefault')
+                ->limit(1)
+                ->condition('ifl.uid', $account->uid)
+                ->execute()
+                ->fetchAll();
+                
+  if (count($results)) {
+    $query = db_select('invite', 'i')
+                ->fields('i', array("email"))
+                ->extend('PagerDefault')
+                ->condition('i.uid', $account->uid)
+                ->condition('canceled', 0)
+                ->execute()
+                ->fetchAllAssoc("email");
+    /*$members = db_select("users", "u")
+                ->fields("u", array("mail"))
+                ->extend('PagerDefault')
+                ->execute()->fetchAllAssoc("mail");*/
+    
+    $friends_list["invited_friends"] = array_keys($query);
+    //$friends_list['members'] = array_keys($members);
+    foreach ($results as $result) {
+      $friends_list["friends"][$result->method][$result->mail_id] = unserialize($result->friends);
+    }
+  }
+  return $friends_list;
+}
+
+function ajax_invite_frined($email) {
+  module_load_include("module", "invite","invite");
+  $form_state = array();
+  $form_state['values']['email'] = urldecode($email);
+  $form_state['values']['op'] = t("Send invite");
+  drupal_form_submit("invite_form", $form_state);
+  
+  print t("success");exit;
+}
