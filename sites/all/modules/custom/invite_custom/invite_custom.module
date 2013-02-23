@@ -3,16 +3,16 @@
 function invite_custom_menu() {
   $items = array();
   
-  $items['user/%user/invite-friends'] = array(
+  $items['user/invite-friends'] = array(
     'title' => t("Invite Friends"),
     'page callback' => 'invite_friends',
-    'access arguments' => array('access content', 1),
+    'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
   
-  $items['ajax/invite_frined/%'] = array(
+  $items['ajax/invite_friend/%'] = array(
     'title' => t("Invite Friends"),
-    'page callback'=> 'ajax_invite_frined',
+    'page callback'=> 'ajax_invite_friend',
     'page arguments' => array(2),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
@@ -21,7 +21,7 @@ function invite_custom_menu() {
   return $items;
 }
 function invite_custom_init() {
-  if (arg(2) == "invite-friends") {
+  if (arg(1) == "invite-friends") {
     drupal_add_js(drupal_get_path("module", "invite_custom") . "/js/invite_custom.js");
     drupal_add_css(drupal_get_path("module", "invite_custom") . "/css/invite_custom.css");
   }
@@ -31,12 +31,13 @@ function invite_custom_block_info_alter(&$blocks, $theme, $code_blocks) {
   if (isset($blocks['invite']['invite'])) {
     $blocks['invite']['invite']['region'] = t("sidebar_second");
     $blocks['invite']['invite']['visibility'] = 1;
-    $blocks['invite']['invite']['pages'] = "user/*/invite-friends";
+    $blocks['invite']['invite']['pages'] = "user/invite-friends";
     $blocks['invite']['invite']['weight'] = 0;
   }
 }
 function invite_custom_form_contact_importer_form_alter(&$form, &$form_state, $form_id) {
   if ($form_state['storage']['step'] == 'select_contacts') {
+    $form['add_contact']['#weight'] = -100;
     $form['#contact_email'] = $form_state['storage']['email'];
     $form['#contact_provider'] = $form_state['storage']['provider']['provider_name'];
     foreach ($form['confirmed_list']['#options'] as &$contact) {
@@ -88,11 +89,12 @@ function invite_custom_contacts_importing_submit(&$form, &$form_state) {
 }
 function invite_friends() {
   global $user;
-  
+   //dpm($user);
+//  $user->uid;
   $user_friends = get_user_friends_list($user);
-  $friends_list = theme("invite_friends_list", array("invite_friends" => $user_friends)). theme("pager");
+  $friends_list = theme("invite_friends_list", array("invite_friends" => $user_friends)) /*. theme("pager")*/;
   if (variable_get("contact_importer_modal","none") == "overlay" && module_exists("overlay")) {
-    return $friends_list . l("Import Other Address Book", "contact_importer_overlay", array("attributes" => array("class" => array("import-contact-link"))));
+    return l("Import Other Address Book", "contact_importer_overlay", array("attributes" => array("class" => array("import-contact-link")))) . $friends_list;
   }
   else {
     return $friends_list . render(drupal_get_form("invite_friends_form"));
@@ -121,8 +123,8 @@ function get_user_friends_list($account) {
   $friends_list = array();
   $results = db_select("invite_friends_list", "ifl")
                 ->fields("ifl")
-                ->extend('PagerDefault')
-                ->limit(1)
+                /*->extend('PagerDefault')
+                ->limit(1)*/
                 ->condition('ifl.uid', $account->uid)
                 ->execute()
                 ->fetchAll();
@@ -149,7 +151,7 @@ function get_user_friends_list($account) {
   return $friends_list;
 }
 
-function ajax_invite_frined($email) {
+function ajax_invite_friend($email) {
   module_load_include("module", "invite","invite");
   $form_state = array();
   $form_state['values']['email'] = urldecode($email);

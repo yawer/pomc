@@ -54,13 +54,16 @@ drupal_add_js(drupal_get_path("module", "pomc_customizations") . "/js/pomc_custo
  function get_individual_paste($row, $view) {
  
  $output = '';
+ $sharedBy = '';
  $title =  $view->style_plugin->rendered_fields[$view->row_index]['title'];
  $image=  $view->style_plugin->rendered_fields[$view->row_index]['field_paste_image'];
  $category =   $view->style_plugin->rendered_fields[$view->row_index]['field_category'];
   $city =   $view->style_plugin->rendered_fields[$view->row_index]['field_city'];
   $commentCount = $view->style_plugin->rendered_fields[$view->row_index]['comment_count'];
   $author = $view->style_plugin->rendered_fields[$view->row_index]['name'];
+  if(isset($view->style_plugin->rendered_fields[$view->row_index]['name_1'])) {
   $sharedBy = $view->style_plugin->rendered_fields[$view->row_index]['name_1'];
+  }
   $description =  $view->style_plugin->rendered_fields[$view->row_index]['body'];
   $nid=$view->style_plugin->rendered_fields[$view->row_index]['nid'];
   $like = flag_get_flag('like');
@@ -72,5 +75,89 @@ drupal_add_js(drupal_get_path("module", "pomc_customizations") . "/js/pomc_custo
 return $output;
  
  }
+ 
+ function MODULENAME_ds_fields_info($entity_type) {
+  // Compile a list of image styles for the profile picture options.
+  $picture_formatters = array();
+  foreach (image_styles() as $formatter) {
+    $picture_formatters['MODULENAME_picture_' . $formatter['name']] = drupal_ucfirst(str_replace('_', ' ', $formatter['name']));
+  }
 
+  $fields = array();
+  $fields['userlist_picture'] = array(
+    'title' => t('Profile picture'),
+    'field_type' => DS_FIELD_TYPE_FUNCTION,
+    'function' => '_MODULENAME_ds_field_userlist_picture',
+    'properties' => array(
+      'formatters' => $picture_formatters,
+    ),
+  );
+
+  return array('user' => $fields);
+}
+
+/**
+ * Custom field displaying a user's profile picture.
+ */
+function _pomc_ds_field_userlist_picture($field) {
+  if ($profile = profile2_load_by_user($field['entity'])) {
+    if ($picture = field_get_items('profile2', $profile['user_profile'], 'field_profile_image')) {
+      $picture = reset($picture);
+    }
+
+    // Provide a default picture for users that have not yet uploaded one.
+    if (!isset($picture['uri']) || empty($picture['uri'])) {
+      $picture['uri'] = 'public://profile_pictures/profile_default.png';
+      $picture['width'] = 247;
+      $picture['height'] = 247;
+    }
+
+    // Retrieve the user's first name to use in the alt tag.
+    $first_name = field_get_items('profile2', $profile['user_profile'], 'field_name');
+    $first_name = !empty($first_name[0]['safe_value']) ? $first_name[0]['safe_value'] : t('User');
+
+    $vars = array(
+     // 'style_name' => str_replace('pomc_picture_', '', $field['profile-picture']),
+      'path' => $picture['uri'],
+      'width' => $picture['width'],
+      'height' => $picture['height'],
+      'alt' => t('@user\'s picture', array('@user' => $first_name)),
+    );
+
+    $image = theme('profile-picture', $vars);
+
+    return l($image, 'user/' . $field['entity']->uid, array('html' => TRUE));
+  }
+  return FALSE;
+}
+ 
+function user_profile_theming($account) {
+$output = '';
+$profile_picture = $name = $description = '';
+ $profile = profile2_load_by_user($account, $type_name = NULL);
+ $follow = flag_get_flag('follow_users');
+ $numberFollowers = $follow->get_count($account);
+ $numberofFollowing = $follow->get_user_count($account);
+// dpm($follow);
+ $followlink = flag_create_link('follow_users', $account);
+ //dpm($profile['user_profile']);
+ if(isset($profile['user_profile']) && isset($profile['user_profile']->field_name['und'][0]['value'])) {
+$name =$profile['user_profile']->field_name['und'][0]['value'];
+}
+if(isset($profile['user_profile']) && ($profile['user_profile']->field_profile_image['und'][0]['filename'])) {
+$path = $profile['user_profile']->field_profile_image['und'][0]['filename']; 
+$profile_picture = theme('image_style', array('style_name' => 'profile-picture', 'path' => $path));
+}
+if (isset($profile['user_profile']) && ($profile['user_profile']->field_description['und'][0]['value'])) {
+$description = $profile['user_profile']->field_description['und'][0]['value'];
+}
+//print $image = drupal_render(field_view_field('profile2', $profile['user_profile'], 'field_profile_image'));
+$editprofileLink = l("Edit Profile", "profile-user_profile/". $account. "/edit");
+$output .= '<div class="user-profile clearfix"><div class="user-pic pull-left">'.$profile_picture.'</div><div class="user-desc  pull-left"><h2 class="user-name"> '. $name .'</h2><p class="user-intro">'.$description.'</p>';
+if ($followlink) {
+$output .= '<div class="follow"><button class="btn btn-danger" >'.$followlink.'</button></div>';
+}
+$output.='</div><div class="user-stats  pull-left"><div class="follow"><button class="btn" >'.$editprofileLink.'</button></div><div class="single-stat"><span class="stat-no"> 3245</span> pastes</div><div class="single-stat"><span class="stat-no"> '.$numberofFollowing.'</span> following</div><div class="single-stat"><span class="stat-no"> '. $numberFollowers.'</span> followers</div></div></div>';
+ return $output;
+}
 ?>

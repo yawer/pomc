@@ -20,6 +20,8 @@ function pomc_preprocess_maintenance_page(&$vars) {
  */
 function pomc_preprocess_html(&$vars) {  
   global $theme_key, $user;
+  
+ 
 if (arg(0)=='user' && arg(1)=='login') {
 drupal_add_css(path_to_theme().'/css/bootstrap.min.css');
 drupal_add_css(path_to_theme().'/css/fullscreenr.css');
@@ -181,9 +183,9 @@ $vars['login'] = $block['content']['#items'][0];
 $vars['register'] = render($print_link);
 }
 }
-function pomc_form_ajaxregister_user_login_wrapper_block_alter(&$form) {
 
-}
+
+
 /**
  * Page preprocessing
  */
@@ -191,6 +193,7 @@ function pomc_preprocess_page(&$vars) {
 
   // Set grid width
   $grid = pomc_grid_info();
+  //  $vars['theme_hook_suggestions'][] = 'page__'. $vars['node']->type;
   $vars['grid_width'] = $grid['name'] . $grid['width'];
 
   // Adjust width variables for nested grid groups

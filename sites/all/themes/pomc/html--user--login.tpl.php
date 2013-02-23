@@ -80,7 +80,7 @@
     </div>
     <div id="highlightBar">
         <div class="container clearfix">
-            <p class="desc">Entire social interactions amongst city dwellers</p>
+            <p class="desc-slogan">Entire social interactions amongst city dwellers</p>
             <p class="action">
             <?php print $login; ?>
             

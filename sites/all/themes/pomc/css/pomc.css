@@ -25,6 +25,66 @@ float:left;
 .pull-right {
 float:right;
 }
+#modalContent {
+
+top: 10%;
+z-index: 1050;
+background-color: white;
+border:none;
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+outline: 0;
+-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+-moz-box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+-webkit-background-clip: padding-box;
+-moz-background-clip: padding-box;
+background-clip: padding-box;
+}
+
+/*Login page*/
+
+.desc-slogan {
+float: left;
+padding-top: 10px;
+font-size: 24px;
+line-height: 1;
+color:white;
+}
+
+div.ctools-modal-content {
+border:none;
+}
+
+div.ctools-modal-content .modal-header {
+padding: 9px 15px;
+border-bottom: 1px solid #EEE;
+background-color:white;
+}
+
+div.ctools-modal-content .modal-title {
+font-size: 31.5px;
+color:black;
+line-height:40px;
+}
+
+#modalContent #user-login input#edit-pass, #modalContent #user-login input#edit-name,#modalContent #user-login input#edit-name--2, #modalContent #user-login input#edit-pass--2{
+width:100%;
+min-height: 20px;
+}
+
+#modalContent #user-login .login-forgot {
+float:right;
+}
+
+#modalContent #user-login .form-actions {
+background-color:white;
+border:none;
+padding:0;
+margin:0;
+}
+/*End Loginpage*/
  /*CSS of the home and board page grid*/
 
 .big-box{
@@ -352,3 +412,65 @@ margin: 0px;
 padding: 4px 3px;
 color: rgba(0, 0, 0, 0.5 );
 }
+
+
+/* profile page css */
+.user-pic{
+    width: 168px;
+    margin-right: 20px;
+}
+.user-desc{
+    width:450px;
+    margin-right: 10px;
+    text-align: left;
+}
+.user-stats{
+    width:150px;
+    text-align: left;
+    font-size: 14px;
+}
+.user-name{
+    text-align: left;
+    font-size: 16px;
+    line-height: 1.1;
+    color: #6f6a4a;
+}
+.user-edit-link {
+  display: inline-block;
+  padding: 4px 12px;
+  border-color: #C5C5C5;
+  background-color: whiteSmoke;
+  text-align: center;
+  color: #333;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  vertical-align: middle;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),0 1px 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #BBB;
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(white),to(#E6E6E6));
+}
+.user-edit-link a {
+  text-decoration: none;
+  color: #333;
+}
+.user-profile{
+    width:800px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    background-color: #fefefe;
+    border: 1px solid #f2f2f2;
+    border-color: rgba(212, 212, 212, 0.87);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    box-shadow: inset 0 1px rgba(237, 237, 237, 0.49);
+    text-align: center;
+    height:214px;
+}
+.pull-left {
+  float: left;
+  padding-top: 5px;
+}
+/* end profile page css */
