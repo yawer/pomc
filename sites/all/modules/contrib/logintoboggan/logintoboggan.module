@@ -418,17 +418,7 @@ function logintoboggan_js_alter(&$javascript) {
 /**
  * Implement hook_page_alter().
  */
-function logintoboggan_page_alter(&$page) {
-  // Remove blocks on access denied pages.
-  if (isset($page['#logintoboggan_denied'])) {
-    drupal_set_message(t('Access denied. You may need to login below or register to access this page.'), 'error');
-    // Allow overriding the removal of the sidebars, since there's no way to
-    // override this in the theme.
-    if (variable_get('logintoboggan_denied_remove_sidebars', TRUE)) {
-      unset($page['sidebar_first'], $page['sidebar_second']);
-    }
-  }
-}
+
 
 
 
@@ -927,21 +917,22 @@ function logintoboggan_get_authentication_form($active_form = 'login') {
 }
 
 function logintoboggan_denied() {
-  if ($GLOBALS['user']->uid == 0) {
-    drupal_set_title(t('Access Denied / User log in'));
-    // Output the user login form.
-    $output = logintoboggan_get_authentication_form('login');
-    drupal_set_page_content($output);
-    // Return page attributes, hide blocks.
-    $page = element_info('page');
-    $page['#logintoboggan_denied'] = TRUE;
+ $original_path = $_GET['destination'];
+  unset($_GET['destination']);
+  if ($GLOBALS['user']->uid == 0
+      && ($path = drupal_get_normal_path(variable_get('logintoboggan_anon_403', '')))
+      && ($path != $original_path)) {
+    drupal_goto($path, array('query'=>array('destination'=>$original_path)));
+  } elseif(($path = drupal_get_normal_path(variable_get('logintoboggan_auth_403', '')))
+      && ($path != $original_path)) {
+    drupal_goto($path, array('query'=>array('destination'=>$original_path)));
+  } else {
+    // Standard 403 handler.
+    drupal_set_title(t('Access denied'));
+    $return = t('You are not authorized to access this page.');
+   }
   }
-  else {
-    drupal_set_title(t('Access Denied'));
-    $page = theme('lt_access_denied');
-  }
-  return $page;
-}
+
 
 /**
   * Modified version of user_validate_name

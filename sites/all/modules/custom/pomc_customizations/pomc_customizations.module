@@ -7,6 +7,45 @@ function pomc_customizations_init() {
 function pomc_customizations_form_alter(&$form, &$form_state, $form_id) {
 global $user;
 
+/*
+function pomc_customizations_user_insert($op, &$edit, &$account, $category = NULL) {
+  switch ($op) {
+    case 'insert':
+      $edit['first_time_login'] = 1;
+      break;
+    case 'login':
+      $data = unserialize($account->data);
+      if ($data['first_time_login']) {
+        user_save($account, array('first_time_login' => 0));
+      }
+      break;
+  }
+}*/
+if($form['#id'] == 'views-exposed-form-dashboard-page-2') {
+$output = '';
+$output = '<ul id = "category-list-options">';
+foreach($form['term_node_tid_depth']['#options'] as $tid => $taxonomy) {
+  if($taxonomy->option != NULL) {
+  $taxonomy_id = array_keys($taxonomy->option);
+    $parent = taxonomy_get_parents($taxonomy_id[0]);
+      if(!$parent) {
+      $children = taxonomy_get_children($taxonomy_id[0]);
+      $children_tid = array_keys($children);
+      //dpm($children_tid);
+      if($children) {
+        $output .= get_children_html($children,$taxonomy->option[$taxonomy_id[0]],$taxonomy_id);
+      }
+      else {
+        $output .= '<li class="primary-list" id="primary-category primary-'.$taxonomy_id[0].'" value = "'.$taxonomy_id[0].'">'.$taxonomy->option[$taxonomy_id[0]].'</li>'; 
+      }
+    }
+
+  }
+
+}
+$output .= '</ul>';
+$form['#suffix'] = $output;
+}
 
 if($form_id=='search_block_form') {
  $form['actions']['#attributes']['class'][] = 'element-invisible';
@@ -34,15 +73,36 @@ $form['actions']['submit']['#attributes'] = array('class' => array('btn btn-larg
 
 }
 
-
+if($form_id=='user_register_form') {
+$form['Button_first'] = array(
+    '#markup' => '<div class="next_first">Next >></div>',
+    '#weight' => 2,
+  );
+$form['Buttons_second'] = array(
+    '#markup' => '<div class="previous_button"><< Previous</div>',
+    '#weight' => 11,
+  );
+//dsm($form);
+}
 if ($form_id == "profile2_edit_user_profile_form"){
-
+/*
 drupal_add_js(drupal_get_path("module", "pomc_customizations") . "/js/pomc_customizations.js");
     drupal_add_js(drupal_get_path("module", "pomc_customizations") . "/js/formToWizard.js");
    drupal_add_js('jQuery(document).ready(function(){jQuery("#profile2-edit-user-profile-form").formToWizard({submitButton:"edit-submit"})});', array('type' => 'inline', 'scope' => 'footer', 'weight' => 5));
+*/
+}
 
 }
 
+function get_children_html ($children, $taxonomy_name, $taxonomy_id){
+$html_list = '<li class="primary-list" id="primary-category primary-'.$taxonomy_id[0].'" value = "'.$taxonomy_id[0].'">'.$taxonomy_name;
+$html_list .='</li><ul class = "category-child-list-'.$taxonomy_id[0].'">';
+foreach($children as $ctid => $childrenlist) {
+$html_list .='<li class="secondary-list " id="secondary-category childof-'.$taxonomy_id[0].' secondary-'.$ctid.'" value ="'.$ctid.'">'.$childrenlist->name.'</li>';
+}
+$html_list .='</ul>'; 
+
+return $html_list;
 }
 
 function pomc_customizations_overlay_child_initialize() {
@@ -70,8 +130,8 @@ drupal_add_js(drupal_get_path("module", "pomc_customizations") . "/js/pomc_custo
   $share = flag_get_flag('share');
   $likelink = flag_create_link('like', $nid);
   $sharelink = flag_create_link('share', $nid);
- $output .= '<div class="column clearfix pull-left"><!--<div class="curl"></div>--><div class="top"></div><div class="mid"><h2 class="title"> '.$title.'</h2><div class="pull-left">by '.$author.'<!-- url = user-name/ --></div><div class="category">in '. $category .'<!-- url = category-name/city-name/ --></div><div>' . $image . '</div><div class="paste-bar clearfix"><div class="pull-left">'.$likelink.' <span id="lightframe"> &bull; </span>'.$sharelink.'</div><div class="pull-right"><span><b class="not-liked"></b> ' . $like->get_count($nid) . ' </span><span> &bull; </span><span><b class="not-shared"></b> '.$share->get_count($nid) .'</span></div></div><p class="desc">'.$description.'</p><div class="info clearfix"><div class="pull-left">'.$commentCount.'</div></div><div class="comment"><textarea class="comment-area" rows="1" placeholder="comment"></textarea><!--<span>shift+enter new line</span>--></div></div><div class="bot"></div></div>';
-
+ $output .= '<div class="column clearfix pull-left"><!--<div class="curl"></div>--><div class="top"></div><div class="mid"><h2 class="title"> '.$title.'</h2><div class="pull-left">by '.$author.'<!-- url = user-name/ --></div><div>' . $image . '</div><p class="desc">'.$description.'</p><div class="paste-bar clearfix"><div class="pull-left">'.$likelink.' <span id="lightframe"> &bull; </span>'.$sharelink.'</div></div><div class="category">in '. $category .'<!-- url = category-name/city-name/ --></div>
+<div class="pull-right"><span> ' . $like->get_count($nid) . ' Likes </span><span> &bull; </span><span> '.$share->get_count($nid) .' Shares</span><span> &bull; </span><span class="info clearfix commentcount">' .$commentCount.' <b class="not-comment" ></b></span></div><div class="comment"><textarea class="comment-area" rows="1" placeholder="comment"></textarea><!--<span>shift+enter new line</span>--></div></div><div class="bot"></div></div>';
 return $output;
  
  }
@@ -159,5 +219,70 @@ $output .= '<div class="follow"><button class="btn btn-danger" >'.$followlink.'<
 }
 $output.='</div><div class="user-stats  pull-left"><div class="follow"><button class="btn" >'.$editprofileLink.'</button></div><div class="single-stat"><span class="stat-no"> 3245</span> pastes</div><div class="single-stat"><span class="stat-no"> '.$numberofFollowing.'</span> following</div><div class="single-stat"><span class="stat-no"> '. $numberFollowers.'</span> followers</div></div></div>';
  return $output;
+}
+/** Following will return the total no of paste by a user
+*/
+function get_node_count_by_user($id_user){
+  $result = db_query('SELECT COUNT(*) as count_paste FROM {node} WHERE uid = :uid', array(':uid' => $id_user));
+  foreach ($result as $record) {
+  return $record->count_paste;
+  }
+}
+function pomc_customizations_preprocess_overlay(&$variables) {
+  //$variables['page']['#theme']='pago';
+   dsm($variables);
+}
+function pomc_customizations_flag($action, $flag, $content_id, $account) {
+/*
+//die();
+  // Follow another user
+  if ($action == 'flag' && $flag->content_type == 'user' && $flag->name == 'follow_users') {
+
+    $message_id = 'heartbeat_follow_user';
+    $variables = array(
+      '@user1' => l($account->name, 'user/' . $account->uid),
+      '@user2' => l(user_load($content_id)->name, 'user/' . $content_id),
+    );
+    heartbeat_api_log($message_id, $account->uid, $content_id, 0, 0, $variables);
+  }
+  
+ 
+    if ($action == 'flag' && $flag->types[0] == 'paste' && $flag->name == 'share') {
+ dpm($flag);
+    $message_id = 'heartbeat_share_paste';
+    $variables = array(
+      '@user1' => l($account->name, 'user/' . $account->uid),
+      '@node_title' => l(node_load($content_id)->title, 'node/' . $content_id),
+      '@author' => node_load($content_id)->name,
+    );
+    heartbeat_api_log($message_id, $account->uid, $content_id, 0, 0, $variables);
+  }
+  
+   if ($action == 'flag' && $flag->types[0] == 'paste' && $flag->name == 'like') {
+ dpm($flag);
+    $message_id = 'heartbeat_like_paste';
+    $variables = array(
+      '@user1' => l($account->name, 'user/' . $account->uid),
+      '@node_title' => l(node_load($content_id)->title, 'node/' . $content_id),
+       '@author' => node_load($content_id)->name,
+    );
+    heartbeat_api_log($message_id, $account->uid, $content_id, 0, 0, $variables);
+  }
+  */
+}
+
+function get_like_count($nid) {
+  $like = flag_get_flag('like');
+  //$share = flag_get_flag('share');
+$count = $like->get_count($nid);
+//dpm($count);
+return $count;
+}
+
+function get_share_count($nid) {
+  //$like = flag_get_flag('like');
+  $share = flag_get_flag('share');
+$count = $share->get_count($nid);
+return $count;
 }
 ?>

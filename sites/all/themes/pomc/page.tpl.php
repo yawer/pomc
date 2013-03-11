@@ -1,8 +1,6 @@
 <?php
 ?>
- <div class = "big-box">
-  <div id="page" class="page content-box">
-    <div id="page-inner" class="page-inner">
+
      <!-- Header Container begins -->
       <div id="header-container" class = "top-header" > 
       <?php print render($page['header_top']);/*
@@ -13,7 +11,7 @@
       <?php endif; */?> 
       <?php
       $menu = theme('nice_menus', array('id' => 0, 'direction' => 'down', 'depth' => 1, 'menu_name' => 'user-menu', 'menu' => NULL));
-         print $menu['content']; ?>
+         if ($variables['classes_array'][0]!='overlay') print $menu['content']; ?>
   </div> <!-- Header Container closes -->
       <!-- header-group region: width = grid_width -->
       <div id="header-group-wrapper" class="header-group-wrapper clearfix">
@@ -76,12 +74,12 @@
                     <div id="content-group" class="content-group region nested <?php print $content_group_width; ?>">
                       <div id="content-group-inner" class="content-group-inner inner">
                         <?php // print theme('grid_block', array('content' => $breadcrumb, 'id' => 'breadcrumbs')); ?>
-                        <?php //  print theme('grid_block', array('content' => $messages, 'id' => 'content-messages')); ?>
+                        <?php  print theme('grid_block', array('content' => $messages, 'id' => 'content-messages')); ?>
 
                         <div id="content-region" class="content-region region nested">
                           <div id="content-region-inner" class="content-region-inner inner">
                             <a id="main-content-area"></a>
-                            <?php // print  theme('grid_block', array('content' => render($tabs), 'id' => 'content-tabs')); ?>
+                            <?php  print  theme('grid_block', array('content' => render($tabs), 'id' => 'content-tabs')); ?>
                             <?php print render($page['help']); ?>
                             <?php print render($title_prefix); ?>
                             <?php if ($title): ?>
@@ -112,6 +110,4 @@
 
       <?php print render($page['postscript_bottom']); ?>
       <?php print render($page['footer']); ?>
-    </div><!-- /page-inner -->
-  </div><!-- /page -->
-  </div>
+  

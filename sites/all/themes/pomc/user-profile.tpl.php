@@ -1,4 +1,5 @@
 <?php
+//dsm($elements['#account']->uid);
 /**
  * @file
  * Default theme implementation to present all user profile data.
@@ -30,12 +31,23 @@
  *   Where the html is handled for each item in the group.
  * @see template_preprocess_user_profile()
  *
- * @ingroup themeable
- */
+ * @ingroup themeable $elements['#account']->uid
+ */ 
+//dsm($user_profile);
 ?>
-<div class="profile"<?php print $attributes; ?>>
-  <?php $userid = arg(1);
-print  user_profile_theming($userid);
-  
-  // print render($user_profile); ?>
-</div>
+<div class="user-profile clearfix">
+                <div class="user-pic pull-left"><?php print render($user_profile['user_picture']); ?></div>
+                <div class="user-desc  pull-left">
+                    <h2 class="user-name"><?php print format_username($elements['#account']); ?></h2>
+                    <p class="user-city"><?php print render($user_profile['field_city']); ?></p>
+                    <p class="user-intro"><?php print render($user_profile['field_description']); ?></p>
+                    <div class="follow"><?php print render($user_profile['flags']['follow_users']); ?></div>
+                </div>
+                <div class="user-stats  pull-left">
+                    <div class="edit-profile"><a href="<?php print format_username($elements['#account']); ?>/edit">Edit your profile</a></div>
+                    <div class="single-stat"><span class="stat-no"> <?php print get_node_count_by_user($elements['#account']->uid); ?></span> pastes</div>
+                    <div class="single-stat"><a href="#"><span class="stat-no">  <?php  $follow = flag_get_flag('follow_users'); print  $follow->get_user_count($account); ?></span> following</a></div>
+                    <div class="single-stat"><a href="#"><span class="stat-no"> <?php $follow = flag_get_flag('follow_users'); print $follow->get_count($account); ?> </span> followers</a></div>
+
+                </div>
+            </div>

@@ -1,5 +1,6 @@
 <?php
-
+//dsm($node);
+//dsm($content);
 /**
  * @file
  * Fusion theme implementation to display a node.
@@ -74,68 +75,64 @@
  * @see template_preprocess_node()
  * @see template_process()
  */
-
+//dsm($content['comments']['comment_form']);
 ?>
- <div class="container content-container">
-        <div class="main-content">
-            <div id="test" class="row clearfix">
-<div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
+<div class="row clearfix" id="test">
 
-<div class="user-col pull-left">
-                    <h2 class="user-name">  <?php
-  print $name; ?> </h2>
-           <?php
- print $user_picture; ?>             
-                    <?php  print $followbutton; ?>
+                <div class="paste-container">
+
+                    <div class="user-col pull-left">
+                        <h2 class="user-name"> <?php  print $name; ?></h2>
+                        <div class="user-pic"><?php print $user_picture; ?></div>
+                        <div class="follow"><?php  print $followbutton; ?></div>
+                    </div>
+
+                    <div class="paste-col clearfix pull-left">
+                        <!--<div class="curl"></div>-->
+                        <h1 class="paste-title"><?php print $title; ?></h1>
+                        <div class="info clearfix">
+                            <div class="pull-left">
+                                by <a href="#"><?php  print $name; ?></a>
+                                <!-- url = user-name/ -->
+                            </div>
+
+                            <div class="pull-right date">
+                                <?php  print format_interval(time() - $node->created, 1) . ' ' . t('ago'); ?>
+                            </div>
+                        </div>
+
+                        <div class="paste-bar clearfix">
+                            <div class="pull-left">
+                                <?php print render($content['links']['flag']['#links']['flag-like']['title']); ?>
+                                <span> • </span>
+                                <a href="#"><?php print render($content['links']['flag']['#links']['flag-share']['title']); ?></a>
+                            </div>
+                            <div class="pull-right">
+                                <span> <?php print get_like_count($node->nid); ?> Likes</span>
+                                <span> • </span>
+                                <span> <?php print get_share_count($node->nid); ?> Shares</span>
+                            </div>
+                        </div>
+                        <div class="paste-img"> <?php print render($content['field_paste_image']); ?></div>
+                        <p class="paste-desc"><?php print render($content['body']); ?></p>
+
+                        <h3 class="sub-paste-title">Say something</h3>
+                        <div class="comment-author clearfix">
+                            <a class="author-avatar pull-left" href="#"><img title="Yawar Yousaf" src="images/avatar1.jpg"></a>
+                            <?php 
+							hide ($content['comments']['comment_form']);
+							print render($content['comments']['comment_form']); ?>
+                        </div>
+         		
+			 <h3 class="sub-paste-title"><?php print get_share_count($node->nid); ?> Shares</h3>
+			<?php $block_share = module_invoke('views', 'block_view', 'user_interests-block_2');
+				print render($block_share['content']); ?> 
+			<h3 class="sub-paste-title"><?php print get_like_count($node->nid); ?> Likes</h3>
+			<?php $block_like = module_invoke('views', 'block_view', 'user_interests-block_1');
+				print render($block_like['content']);?>
+			<h3 class="sub-paste-title"><?php print $comment_count; ?> Comments</h3>
+                        <?php print render($content['comments']); ?>
+                        </div>
+                    </div>
                 </div>
-
-
-  <?php print render($title_prefix); ?>
-  <?php if (!$page): ?>
-    <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
-  <?php endif; ?>
-  <?php print render($title_suffix); ?>
-
-  <?php if ($display_submitted || !empty($content['links']['terms'])): ?>
-    <div class="meta">
-      <?php if ($display_submitted && isset($submitted) && $submitted): ?>
-        <span class="submitted"><?php print $submitted; ?></span>
-      <?php endif; ?>
-
-      <?php if (!empty($content['links']['terms'])): ?>
-        <div class="terms terms-inline">
-          <?php print render($content['links']['terms']); ?>
-        </div>
-      <?php endif; ?>
-    </div>
-  <?php endif; ?>
-
-  <?php if (!$teaser): ?>
-    <div id="node-top" class="node-top region nested">
-      <?php print render($node_top); ?>
-    </div>
-  <?php endif; ?>
-  
-  <div class="content"<?php print $content_attributes; ?>>
-    <?php
-      // We hide the comments and links now so that we can render them later.
-      hide($content['comments']);
-      hide($content['links']);
-      print render($content);
-    ?>
-  </div>
-
-  <?php print render($content['links']); ?>
-
-  <?php print render($content['comments']); ?>
-
-  <?php if (!$teaser): ?>
-    <div id="node-bottom" class="node-bottom region nested">
-      <?php print render($node_bottom); ?>
-    </div>
-  <?php endif; ?>
-  
-</div>
- </div>
-    </div>
-</div>
+            </div>

@@ -326,6 +326,35 @@ function pomc_preprocess_views_view(&$vars) {
 }
 
 
+function pomc_privatemsg_list_field__subject($variables) {
+  $thread = $variables['thread'];
+  $field = array();
+  $options = array();
+  $is_new = '';
+  if (!empty($thread['is_new'])) {
+    $is_new = theme('mark', array('type' => MARK_NEW));
+    $options['fragment'] = 'new';
+  }
+  $options['attributes']['class'] = array('privatemsg-list-message-link');
+  $subject = $thread['subject'];
+  if ($thread['has_tokens']) {
+    $message = privatemsg_message_load($thread['thread_id']);
+    $subject = privatemsg_token_replace($subject, array('privatemsg_message' => $message), array('sanitize' => TRUE, 'privatemsg-show-span' => FALSE));
+  }
+  if (!isset($message)) {
+    $message = privatemsg_message_load($thread['thread_id']);
+  }
+
+  // We will add user picture here.
+  $field['data'] = theme('user_picture', array('account' => $message->author));
+  // Then we will append the subject.
+  $field['data'] .= l($subject, 'messages/view/' . $thread['thread_id'], $options) . $is_new;
+
+  $field['class'][] = 'privatemsg-list-subject';
+  return $field;
+}
+
+
 /**
  * Search result preprocessing
  */
@@ -519,4 +548,9 @@ function pomc_theme_paths($theme) {
   }
   $base_themes[$theme] = drupal_get_path('theme', $theme);   // Current theme path
   return $base_themes;
+}
+/**
+*/
+function pomc_preprocess_overlay(&$variables) {
+  dsm($variables);
 }

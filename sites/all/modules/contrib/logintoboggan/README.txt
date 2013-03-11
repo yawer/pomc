@@ -3,6 +3,10 @@
     README.txt for logintoboggan.module for Drupal
 *******************************************************
 
+Applied patch given here: http://drupal.org/files/i465390-10.patch
+
+
+
 Co-developed by Jeff Robbins (jjeff) and Chad Phillips (hunmonk) with several
 features added by Raven Brooks (rbrooks00).
 

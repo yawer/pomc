@@ -130,26 +130,25 @@ function logintoboggan_main_settings() {
     '#tree' => FALSE,
   );
 
-  $site403 = variable_get('site_403', '');
-  if ($site403 == '') {
-    $disabled = $default = '0';
-  }
-  elseif ($site403 == 'toboggan/denied') {
-    $disabled = '0';
-    $default = 'toboggan/denied';
-  }
-  else {
-    $disabled = $default = $site403;
-  }
-  $options = array($disabled => $_disabled, 'toboggan/denied' => $_enabled);
-
-  $form['other']['logintoboggan_site_403'] = array(
-    '#type' => 'radios',
-    '#title' => t('Present login form on access denied (403)'),
-    '#options' => $options,
-    '#default_value' => $default,
-    '#description' => t('Anonymous users will be presented with a login form along with an access denied message.')
+  $options = array(
+    0 => $_disabled,
+    'user/login' => t('Login'),
+    'user/register' => t('Register'),
   );
+
+  $form['other']['logintoboggan_anon_403'] = array(
+    '#type' => 'radios',
+    '#title' => t('Redirect anonymous to login or redirect form on access denied (403)'),
+    '#options' => $options,
+    '#default_value' => variable_get('logintoboggan_anon_403', ''),
+    '#description' => t('Anonymous users will be redirected to login or redirect form.')
+  );
+  $form['other']['logintoboggan_auth_403'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Redirect authenticated users on access denied (403)'),
+    '#default_value' => variable_get('logintoboggan_auth_403', ''),
+    '#description' => t('Authenticated users will be redirected to this page on access denied.')
+   );
   $form['other']['logintoboggan_login_successful_message'] = array(
     '#type' => 'radios',
     '#title' => t('Display login successful message'),
@@ -195,9 +194,13 @@ function logintoboggan_main_settings_submit($form, &$form_state) {
   unset($form_state['values']['logintoboggan_user_email_verification']);
 
   // Site 403 setting.
-  $site_403 = $form_state['values']['logintoboggan_site_403'] == '0' ? '' : $form_state['values']['logintoboggan_site_403'];
-  variable_set('site_403', $site_403);
-  unset($form_state['values']['logintoboggan_site_403']);
+  $anon_403 = &$form_state['values']['logintoboggan_anon_403'];
+  if($anon_403 == '0'){
+    $anon_403 ='';
+  }
+  if($anon_403){
+    variable_set('site_403', 'toboggan/denied');
+  }
 
   // If the unified login setting has been changed, we need to rebuild the
   // menu cache.

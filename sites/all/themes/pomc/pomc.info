@@ -8,6 +8,7 @@ engine = phptemplate
 ;stylesheets[all][] = css/fusion-starter-style.css
 stylesheets[all][] = css/pomc.css
 
+scripts[] = js/pomc.js
 ; --------------------------------------------------------------------------------
 ; This provides support for the Fusion Accelerator suite.  
 ; See http://www.drupal.org/project/fusion_accelerator for more information.

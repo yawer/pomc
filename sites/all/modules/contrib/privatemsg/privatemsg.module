@@ -2131,6 +2131,13 @@ function _privatemsg_list_thread($tableselect) {
     }
     $tableselect['#options'][$id] = $row;
   }
+  $tableselect['#header']['subject']['data'] = '';
+  $tableselect['#header']['subject']['class'] = '';
+  $tableselect['#header']['participants']['data']='';
+  $tableselect['#header']['count']['data'] ='';
+  $tableselect['#header']['count'] = '';
+  $tableselect['#header']['last_updated']['data'] = '';
+  //dpm($tableselect);
   return $tableselect;
 }
 

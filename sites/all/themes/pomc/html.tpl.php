@@ -57,7 +57,13 @@
     <a href="#main-content-area"><?php print t('Skip to main content area'); ?></a>
   </div>
   <?php print $page_top; ?>
+   <div class = "big-box">
+  <div id="page" class="page content-box">
+    <div id="page-inner" class="page-inner">
   <?php print $page; ?>
+  </div>
+   </div>
+   </div>
   <?php print $page_bottom; ?>
 </body>
 </html>
