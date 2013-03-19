@@ -100,6 +100,7 @@ background-color:white;
 border:none;
 padding:0;
 margin:0;
+float:left;
 }
 /*End Loginpage*/
  /*CSS of the home and board page grid*/
@@ -679,6 +680,11 @@ To keep taxonomy filter in the middle
 	background-position:0 -15px;
 	transition:background-position .1s linear 0s;
 }
+
+.ctools-modal-ctools-ajax-register-style:hover {
+
+}
+
 .stat-no {
     font-weight: bold;
 }
@@ -898,6 +904,7 @@ To keep taxonomy filter in the middle
 	float:right;
 	margin-right:55px;
 }
+
 #views-exposed-form-dashboard-page-2{
 
 display:none;

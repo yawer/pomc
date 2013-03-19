@@ -81,7 +81,6 @@ foreach($form['category']['#options'] as $tid => $taxonomy) {
 }
 $output .= '</ul>';
 $form['#suffix'] = $output;
-
 }
 
 if($form_id=='search_block_form') {
@@ -102,10 +101,8 @@ $form['name']['#title'] = Null;
 $form['pass']['#title'] = Null;
 $form['name']['#attributes'] = array('placeholder' => t('Email Address'));
 $form['pass']['#attributes'] = array('placeholder' => t('Password'));
-//$form['links']['#markup'] = '<div class="request-link pull-right">'.$login_link['#items'][1].'</div>'; 
 $form['actions']['submit']['#attributes'] = array('class' => Null);
 $form['actions']['submit']['#attributes'] = array('class' => array('btn btn-large btn-primary'));
-// Remove Request New Password from Block form
     $form['links']['#weight'] = 540;
 
 }
@@ -113,13 +110,12 @@ $form['actions']['submit']['#attributes'] = array('class' => array('btn btn-larg
 if($form_id=='user_register_form') {
 $form['Button_first'] = array(
     '#markup' => '<div class="next_first">Next >></div>',
-    '#weight' => 3,
-    );
+    '#weight' => 2,
+  );
 $form['Buttons_second'] = array(
     '#markup' => '<div class="previous_button"><< Previous</div>',
-    '#weight' => 30,
-    );
-dsm($form);
+    '#weight' => 11,
+  );
 }
 if ($form_id == "profile2_edit_user_profile_form"){
 /*
@@ -131,7 +127,7 @@ drupal_add_js(drupal_get_path("module", "pomc_customizations") . "/js/pomc_custo
 
 }
 
-function get_children_html($children, $taxonomy_name, $tid){
+function get_children_html ($children, $taxonomy_name, $tid){
 $html_list = '<li class="primary-list" id="primary-category primary-'.$tid.'" value = "'.$tid.'">'.$taxonomy_name;
 $html_list .='</li><ul id="secondary-category-list" class = "category-child-list-'.$tid.'">';
 foreach($children as $ctid => $childrenlist) {
@@ -227,7 +223,7 @@ function _pomc_ds_field_userlist_picture($field) {
   }
   return FALSE;
 }
- /*
+ 
 function user_profile_theming($account) {
 $output = '';
 $profile_picture = $name = $description = '';
@@ -256,7 +252,7 @@ $output .= '<div class="follow"><button class="btn btn-danger" >'.$followlink.'<
 }
 $output.='</div><div class="user-stats  pull-left"><div class="follow"><button class="btn" >'.$editprofileLink.'</button></div><div class="single-stat"><span class="stat-no"> 3245</span> pastes</div><div class="single-stat"><span class="stat-no"> '.$numberofFollowing.'</span> following</div><div class="single-stat"><span class="stat-no"> '. $numberFollowers.'</span> followers</div></div></div>';
  return $output;
-}*/
+}
 /** Following will return the total no of paste by a user
 */
 function get_node_count_by_user($id_user){
@@ -322,9 +318,4 @@ function get_share_count($nid) {
 $count = $share->get_count($nid);
 return $count;
 }
-
-/**
- * 
- *
- */
 ?>
