@@ -1,11 +1,9 @@
 <?php
 ?>
- <div class = "big-box">
-  <div id="page" class="page content-box">
-    <div id="page-inner" class="page-inner">
+
      <!-- Header Container begins -->
       <div id="header-container" class = "top-header" > 
-      <?php if (!$in_overlay) print render($page['header_top']);/*
+      <?php print render($page['header_top']);/*
       if ($logo): ?>
       <div class="logo">
 <a href="<?php print check_url($front_page); ?>" title="<?php print t('Home'); ?>"><img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" /></a>
@@ -112,6 +110,4 @@
 
       <?php print render($page['postscript_bottom']); ?>
       <?php print render($page['footer']); ?>
-    </div><!-- /page-inner -->
-  </div><!-- /page -->
-  </div>
+  

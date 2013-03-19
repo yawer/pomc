@@ -1,5 +1,5 @@
 <?php
-//dsm($elements['#account']->uid);
+dsm($elements['#account']->uid);
 /**
  * @file
  * Default theme implementation to present all user profile data.
@@ -33,7 +33,7 @@
  *
  * @ingroup themeable $elements['#account']->uid
  */ 
-dsm($user_profile);
+dsm($user);
 ?>
 <div class="user-profile clearfix">
                 <div class="user-pic pull-left"><?php print render($user_profile['user_picture']); ?></div>
@@ -44,7 +44,9 @@ dsm($user_profile);
                     <div class="follow"><?php print render($user_profile['flags']['follow_users']); ?></div>
                 </div>
                 <div class="user-stats  pull-left">
-                    <div class="edit-profile"><a href="<?php print format_username($elements['#account']); ?>/edit">Edit your profile</a></div>
+		<?php if($elements['#account']->uid==$GLOBALS['user']->uid): ?>
+                    <div class="edit-profile"><?php if($elements['#account']->uid==$GLOBALS['user']->uid) print l(t('Edit your profile'), "user/{$GLOBALS['user']->uid}/edit");?></div>
+		<?php endif; ?>
                     <div class="single-stat"><span class="stat-no"> <?php print get_node_count_by_user($elements['#account']->uid); ?></span> pastes</div>
                     <div class="single-stat"><a href="#"><span class="stat-no">  <?php  $follow = flag_get_flag('follow_users'); print  $follow->get_user_count($account); ?></span> following</a></div>
                     <div class="single-stat"><a href="#"><span class="stat-no"> <?php $follow = flag_get_flag('follow_users'); print $follow->get_count($account); ?> </span> followers</a></div>

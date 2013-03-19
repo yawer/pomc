@@ -76,13 +76,13 @@ $form['actions']['submit']['#attributes'] = array('class' => array('btn btn-larg
 if($form_id=='user_register_form') {
 $form['Button_first'] = array(
     '#markup' => '<div class="next_first">Next >></div>',
-    '#weight' => 2,
-  );
+    '#weight' => 3,
+    );
 $form['Buttons_second'] = array(
     '#markup' => '<div class="previous_button"><< Previous</div>',
-    '#weight' => 11,
-  );
-//dsm($form);
+    '#weight' => 30,
+    );
+dsm($form);
 }
 if ($form_id == "profile2_edit_user_profile_form"){
 /*
@@ -285,4 +285,9 @@ function get_share_count($nid) {
 $count = $share->get_count($nid);
 return $count;
 }
+
+/**
+ * 
+ *
+ */
 ?>

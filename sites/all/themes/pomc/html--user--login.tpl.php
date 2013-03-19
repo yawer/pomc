@@ -87,7 +87,7 @@
             <span>or</span>
              
              
-                <a href="#register" role="button" class="btn btn-large btn-success" data-toggle="modal">Register</a>
+                <a href="<?php print $base_url;?>/request-invite/request-an-invite" role="button" class="btn btn-large btn-success" data-toggle="modal">Request an invite</a>
             </p>
         </div>
     </div>
