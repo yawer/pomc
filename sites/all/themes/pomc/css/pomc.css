@@ -898,6 +898,9 @@ To keep taxonomy filter in the middle
 	float:right;
 	margin-right:55px;
 }
+
+/*Category and city filter effects*/
+
 #views-exposed-form-dashboard-page-2{
 
 display:none;
@@ -911,3 +914,28 @@ display: none;
 }
 #category-list-options #secondary-category-list {
    display: none;   }
+
+/*Category and city filter effects end*/
+
+/*Fixing Overlay */
+
+.page-node-add-paste #overlay {
+display: table;
+margin: 0 auto;
+min-height: 100px;
+min-width: 700px;
+position: relative;
+padding: 0;
+padding-bottom: 0px;
+padding-right: 0px;
+width: 88%;
+}
+
+.overlay .main-group-inner{
+background-color: white;
+}
+
+.page-node-add-paste #overlay #overlay-content {
+padding: 0px;
+}
+/*Overlay fixing closed!*/

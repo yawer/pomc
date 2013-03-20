@@ -84,7 +84,10 @@
                     <div class="user-col pull-left">
                         <h2 class="user-name"> <?php  print $name; ?></h2>
                         <div class="user-pic"><?php print $user_picture; ?></div>
-                        <div class="follow"><?php  print $followbutton; ?></div>
+                        <?php 
+                        ?>
+                        <div class="follow"><?php
+ print flag_create_link("follow_users", $uid); ?></div>
                     </div>
 
                     <div class="paste-col clearfix pull-left">
