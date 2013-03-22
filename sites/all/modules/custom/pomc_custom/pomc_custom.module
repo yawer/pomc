@@ -93,7 +93,7 @@ $node = node_load($nid);
 
 }
 
- if($message_id == 'heartbeat_add_comment' && node_load($nid)->uid == $user->uid) {
+ if($message_id == 'heartbeat_add_comment' && node_load($nid)->uid == $user->uid && $uid != $user->uid) {
   $output .= '<div>'.l(user_load($uid)->name, "users/".$uid).' has commented on your paste '.l(node_load($nid)->title, "node/".$nid).'</div>';
  }
 

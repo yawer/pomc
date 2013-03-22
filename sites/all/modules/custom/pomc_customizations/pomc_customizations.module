@@ -231,8 +231,9 @@ global $user;
 $output = '';
 $output .= '<ul class="nav nav-pills pull-right">';
 $output .= '<li class="active">'.l("Home", "home").'</li>';
-$output .= '<li>'.l("Notifications", "notifications").'</li>';
 $output .= '<li>'.l("Create Paste", "node/add/paste").'</li>';
+$output .= '<li>'.l("Notifications", "notifications").'</li>';
+
 
 $output .= '<li class="dropdown">'.l($user->name, "user/".$user->uid, array("attributes" => array("class" => array("dropdown-toggle")))).'';
 
