@@ -1,0 +1,5 @@
+name = POMC Custom
+description = Creates notifications for users
+core = 7.x
+package = Paste On My City Custom Code
+

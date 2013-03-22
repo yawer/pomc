@@ -1,0 +1,117 @@
+<?php
+
+function pomc_custom_menu() {
+  $items = array();
+  
+  $items['notifications'] = array(
+    'title' => t("Notifications"),
+    'page callback' => 'get_notifications_filter',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+ 
+  
+  return $items;
+}
+
+
+function pomc_custom_flag($action, $flag, $content_id, $account) {
+
+
+  // Follow another user
+  if ($action == 'flag' && $flag->content_type == 'user' && $flag->name == 'follow_users') {
+
+    $message_id = 'heartbeat_follow_user';
+    $variables = array(
+      '@user1' => l($account->name, 'user/' . $account->uid, array('attributes' => array('class' => 'user-link'))),
+      '@user2' => $content_id,
+    );
+    heartbeat_api_log($message_id, $account->uid, $content_id, 0, 0, $variables);
+  }
+  
+ 
+    if ($action == 'flag' && $flag->types[0] == 'paste' && $flag->name == 'share') {
+
+    $message_id = 'heartbeat_share_paste';
+    $variables = array(
+      '@user1' => l($account->name, 'user/' . $account->uid),
+      '@node_title' => l(node_load($content_id)->title, 'node/' . $content_id),
+      '@author' => node_load($content_id)->name,
+    );
+    heartbeat_api_log($message_id, $account->uid, $uid_target = 0, $content_id, 0, 0, $variables);
+  }
+  
+   if ($action == 'flag' && $flag->types[0] == 'paste' && $flag->name == 'like') {
+;
+    $message_id = 'heartbeat_like_paste';
+    $variables = array(
+      '@user1' => l($account->name, 'user/' . $account->uid),
+      '@node_title' => l(node_load($content_id)->title, 'node/' . $content_id),
+       '@author' => node_load($content_id)->name,
+    );
+    heartbeat_api_log($message_id, $account->uid, $uid_target = 0, $content_id, 0, 0, $variables);
+  }
+ 
+}
+
+
+
+function get_notifications_filter() {
+global $user;
+$output = '';
+$heartbeats = db_select('heartbeat_activity', 'ha')
+  ->fields('ha', array('message_id', 'nid', 'uid_target', 'uid'))
+  ->orderBy('timestamp', 'desc')
+  ->execute()
+  ->fetchAll();
+foreach($heartbeats as $heartbeat) {
+
+//$message =  $view->style_plugin->rendered_fields[$view->row_index]['message'];
+$target_uid =  $heartbeat->uid_target;
+$nid =  $heartbeat->nid;
+$uid = $heartbeat->uid;
+$message_id =  $heartbeat->message_id;
+if($target_uid == $user->uid && $message_id =='heartbeat_follow_user') {
+
+ $output .= '<div>'.l(user_load($uid)->name, "users/".$uid).' now follows you</div>';
+
+}
+
+if($target_uid != $user->uid) {
+ if( $message_id =='heartbeat_like_paste' || $message_id =='heartbeat_share_paste') {
+ if($message_id =='heartbeat_like_paste') {
+ $activity_label = 'liked';
+ }
+ if($message_id == 'heartbeat_share_paste') {
+ $activity_label = 'shared';
+ }
+$node = node_load($nid);
+ if($node->uid == $user->uid) {
+  $output .= '<div>'.l(user_load($uid)->name, "users/".$uid).' has '. $activity_label.' on your paste '.l($node->title, "node/".$nid).'</div>';
+ }
+ }
+
+}
+
+ if($message_id == 'heartbeat_add_comment' && node_load($nid)->uid == $user->uid) {
+  $output .= '<div>'.l(user_load($uid)->name, "users/".$uid).' has commented on your paste '.l(node_load($nid)->title, "node/".$nid).'</div>';
+ }
+
+}
+
+
+
+if($target_uid != $user->uid) {
+ if( $message_id =='heartbeat_like_paste' || $message_id =='heartbeat_share_paste') {
+
+ if(node_load($target_uid)->uid == $user->uid) {
+  $output .= '<div>'.$message.'</div>';
+ }
+ }
+ if($message_id == 'heartbeat_add_comment' && node_load($nid)->uid == $user->uid) {
+  $output .= '<div>'.$message.'</div>';
+ }
+}
+
+ return $output;
+}
