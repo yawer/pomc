@@ -231,18 +231,19 @@ global $user;
 $output = '';
 $output .= '<ul class="nav nav-pills pull-right">';
 $output .= '<li class="active">'.l("Home", "home").'</li>';
-$output .=' <li>'.l("Inbox", "messages").'</li>';
-$output .= '<li>'.l("Create Paste", "node/add/paste").'</li>';
 $output .= '<li>'.l("Notifications", "notifications").'</li>';
+$output .= '<li>'.l("Create Paste", "node/add/paste").'</li>';
+
 $output .= '<li class="dropdown">'.l($user->name, "user/".$user->uid, array("attributes" => array("class" => array("dropdown-toggle")))).'';
 
 
 $output .= '<ul class="dropdown-menu">';
-
-$output .= '<li>'.l("Invite Friends", "user/invite-friends").'</li>';
+$output .=' <li>'.l("Inbox", "messages").'</li>';
 $output .= '<li>'.l("Followers", "user/".$user->uid."/followers").'</li>';
 $output .= '<li>'.l("Following", "user/".$user->uid."/following").'</li>';
+$output .= '<li>'.l("Invite Friends", "user/invite-friends").'</li>';
 $output .= '<li>'.l("Edit Profile", "user/".$user->uid."/edit").'</li>';
+$output .= '<li>'.l("Logout", "user/logout").'</li>';
 $output .='</ul></li></ul>';
 return $output;                
 }
