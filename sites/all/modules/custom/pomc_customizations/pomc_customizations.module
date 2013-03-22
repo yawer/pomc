@@ -164,14 +164,13 @@ return $html_list;
   $share = flag_get_flag('share');
   $likelink = flag_create_link('like', $nid);
   $sharelink = flag_create_link('share', $nid);
+  $print_form = drupal_get_form("comment_node_paste_form", (object) array('nid' => $nid));
+  hide($print_form['author']);
  $output .= '<div class="column clearfix pull-left"><!--<div class="curl"></div>--><div class="top"></div><div class="mid"><h2 class="title"> '.$title.'</h2><div class="pull-left">by '.$author.'<!-- url = user-name/ --></div><div>' . $image . '</div><p class="desc">'.$description.'</p><div class="paste-bar clearfix"><div class="pull-left">'.$likelink.' <span id="lightframe"> &bull; </span>'.$sharelink.'</div></div><div class="category">in '. $category .'<!-- url = category-name/city-name/ --></div>
-<div class="pull-right"><span> ' . $like->get_count($nid) . ' Likes </span><span> &bull; </span><span> '.$share->get_count($nid) .' Shares</span><span> &bull; </span><span class="info clearfix commentcount">' .$commentCount.' <b class="not-comment" ></b></span></div><div class="comment"><textarea class="comment-area" rows="1" placeholder="comment"></textarea><!--<span>shift+enter new line</span>--></div></div><div class="bot"></div></div>';
+<div class="pull-right"><span> ' . $like->get_count($nid) . ' Likes </span><span> &bull; </span><span> '.$share->get_count($nid) .' Shares</span><span> &bull; </span><span class="info clearfix commentcount">' .$commentCount.' <b class="not-comment" ></b></span></div>'. drupal_render($print_form).'</div><div class="bot"></div></div>';
 return $output;
  
  }
- 
-
-
  /*
 function user_profile_theming($account) {
 $output = '';
@@ -210,9 +209,6 @@ function get_node_count_by_user($id_user){
   return $record->count_paste;
   }
 }
-
-
-
 function get_like_count($nid) {
   $like = flag_get_flag('like');
   //$share = flag_get_flag('share');
@@ -231,7 +227,7 @@ return $count;
 function custom_menu_for_header() {
 global $user;
 
-dpm($user);
+//dpm($user);
 $output = '';
 $output .= '<ul class="nav nav-pills pull-right">';
 $output .= '<li class="active">'.l("Home", "home").'</li>';

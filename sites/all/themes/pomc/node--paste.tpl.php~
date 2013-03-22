@@ -75,7 +75,7 @@
  * @see template_preprocess_node()
  * @see template_process()
  */
-dsm($content['comments']);
+//dsm($content['comments']['comment_form']);
 ?>
 <div class="row clearfix" id="test">
 
@@ -84,7 +84,10 @@ dsm($content['comments']);
                     <div class="user-col pull-left">
                         <h2 class="user-name"> <?php  print $name; ?></h2>
                         <div class="user-pic"><?php print $user_picture; ?></div>
-                        <div class="follow"><?php  print $followbutton; ?></div>
+                        <?php 
+                        ?>
+                        <div class="follow"><?php
+ print flag_create_link("follow_users", $uid); ?></div>
                     </div>
 
                     <div class="paste-col clearfix pull-left">
@@ -117,9 +120,10 @@ dsm($content['comments']);
                         <p class="paste-desc"><?php print render($content['body']); ?></p>
 
                         <h3 class="sub-paste-title">Say something</h3>
-                        <div class="comment-author clearfix">
-                            <a class="author-avatar pull-left" href="#"><img title="Yawar Yousaf" src="images/avatar1.jpg"></a>
-                            <?php print render($content['comments']['comment_form']); ?>
+                        <div class="comment-on-paste clearfix">
+                            <?php hide($content['comments']['comment_form']['author']);
+				  print $user_picture;
+                                  print render($content['comments']['comment_form']); ?>
                         </div>
          		
 			 <h3 class="sub-paste-title"><?php print get_share_count($node->nid); ?> Shares</h3>

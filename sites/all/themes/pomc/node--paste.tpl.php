@@ -120,11 +120,10 @@
                         <p class="paste-desc"><?php print render($content['body']); ?></p>
 
                         <h3 class="sub-paste-title">Say something</h3>
-                        <div class="comment-author clearfix">
-                            <a class="author-avatar pull-left" href="#"><img title="Yawar Yousaf" src="images/avatar1.jpg"></a>
-                            <?php 
-							hide ($content['comments']['comment_form']);
-							print render($content['comments']['comment_form']); ?>
+                        <div class="comment-author comment-on-paste clearfix">
+                            <?php hide($content['comments']['comment_form']['author']);
+				  print $user_picture;
+                                  print render($content['comments']['comment_form']); ?>
                         </div>
          		
 			 <h3 class="sub-paste-title"><?php print get_share_count($node->nid); ?> Shares</h3>

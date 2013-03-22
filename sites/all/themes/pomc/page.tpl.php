@@ -8,10 +8,7 @@
       <div class="logo">
 <a href="<?php print check_url($front_page); ?>" title="<?php print t('Home'); ?>"><img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" /></a>
         </div>
-      <?php endif; */?> 
-      <?php
-      $menu = theme('nice_menus', array('id' => 0, 'direction' => 'down', 'depth' => 1, 'menu_name' => 'user-menu', 'menu' => NULL));
-         if ($variables['classes_array'][0]!='overlay') print $menu['content']; ?>
+      <?php endif; */?>
   </div> <!-- Header Container closes -->
       <!-- header-group region: width = grid_width -->
       <div id="header-group-wrapper" class="header-group-wrapper clearfix">
