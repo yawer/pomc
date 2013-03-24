@@ -344,7 +344,7 @@ function pomc_privatemsg_list_field__subject($variables) {
   if (!isset($message)) {
     $message = privatemsg_message_load($thread['thread_id']);
   }
-
+dpm($message);
   // We will add user picture here.
   $field['data'] = theme('user_picture', array('account' => $message->author));
   // Then we will append the subject.
@@ -552,5 +552,4 @@ function pomc_theme_paths($theme) {
 /**
 */
 function pomc_preprocess_overlay(&$variables) {
-  dsm($variables);
 }

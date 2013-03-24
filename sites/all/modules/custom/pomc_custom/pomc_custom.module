@@ -59,6 +59,7 @@ function pomc_custom_flag($action, $flag, $content_id, $account) {
 function get_notifications_filter() {
 global $user;
 $output = '';
+$output .= '<ul class = "notification-container">';
 $heartbeats = db_select('heartbeat_activity', 'ha')
   ->fields('ha', array('message_id', 'nid', 'uid_target', 'uid'))
   ->orderBy('timestamp', 'desc')
@@ -70,10 +71,12 @@ foreach($heartbeats as $heartbeat) {
 $target_uid =  $heartbeat->uid_target;
 $nid =  $heartbeat->nid;
 $uid = $heartbeat->uid;
-$message_id =  $heartbeat->message_id;
+$user_profile = user_load($uid);
+$image = theme('image_style', array('style_name' => 'activity_avatar', 'path' => $user_profile->field_profile_pic['und'][0]['uri'], 'alt' => $user_profile->name, 'title' => $user_profile->name));
+$message_id = $heartbeat->message_id;
 if($target_uid == $user->uid && $message_id =='heartbeat_follow_user') {
 
- $output .= '<div>'.l(user_load($uid)->name, "users/".$uid).' now follows you</div>';
+ $output .= '<li class = "notification-item"><div class= "notification-image">'.$image.'</div><div class="notification-text">'.l($user_profile->name, "users/".$uid).' now follows you</div></li>';
 
 }
 
@@ -86,32 +89,40 @@ if($target_uid != $user->uid) {
  $activity_label = 'shared';
  }
 $node = node_load($nid);
- if($node->uid == $user->uid) {
-  $output .= '<div>'.l(user_load($uid)->name, "users/".$uid).' has '. $activity_label.' on your paste '.l($node->title, "node/".$nid).'</div>';
+ if(($node->uid == $user->uid) && ($uid != $user->uid)) {
+  $output .= '<li class = "notification-item"><div class= "notification-image">'.$image.'</div><div class="notification-text">'.l($user_profile->name, "users/".$uid).' '. $activity_label.' on your paste '.l($node->title, "node/".$nid).'</div></li>';
  }
  }
 
 }
 
  if($message_id == 'heartbeat_add_comment' && node_load($nid)->uid == $user->uid && $uid != $user->uid) {
-  $output .= '<div>'.l(user_load($uid)->name, "users/".$uid).' has commented on your paste '.l(node_load($nid)->title, "node/".$nid).'</div>';
+  $output .= '<li class = "notification-item"><div class= "notification-image">'.$image.'</div><div class="notification-text">'.l($user_profile->name, "users/".$uid).' commented on your paste '.l(node_load($nid)->title, "node/".$nid).'</div></li>';
  }
 
 }
 
-
-
-if($target_uid != $user->uid) {
- if( $message_id =='heartbeat_like_paste' || $message_id =='heartbeat_share_paste') {
-
- if(node_load($target_uid)->uid == $user->uid) {
-  $output .= '<div>'.$message.'</div>';
- }
- }
- if($message_id == 'heartbeat_add_comment' && node_load($nid)->uid == $user->uid) {
-  $output .= '<div>'.$message.'</div>';
- }
-}
+$output .= '</ul>';
 
  return $output;
+}
+
+function get_follower_list($row, $view) {
+ $name =  $view->style_plugin->rendered_fields[$view->row_index]['name'];
+ $description =  $view->style_plugin->rendered_fields[$view->row_index]['field_description'];
+ $city =  $view->style_plugin->rendered_fields[$view->row_index]['field_city'];
+ $picture =  $view->style_plugin->rendered_fields[$view->row_index]['picture'];
+ $uid =  $view->style_plugin->rendered_fields[$view->row_index]['uid'];
+ $followlink = flag_create_link('follow_users', $uid);
+ $output = '';
+ $output .= '<div class="single-person clearfix">'.$picture.'
+                    <div class="single-person-info pull-left">
+                        <a class="single-person-name" href="#">'.$name.'</a> <span>, </span>
+                        <span class="single-person-city">'.$city.'</span>
+                        <p class="single-person-desc">'.$description.'</p>
+                    </div>
+                    <div class="follow pull-right">'.$followlink.'</div>
+                </div>';
+                
+return $output;
 }

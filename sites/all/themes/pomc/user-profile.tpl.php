@@ -47,7 +47,7 @@
 		<?php if($elements['#account']->uid==$GLOBALS['user']->uid): ?>
                     <div class="edit-profile"><?php if($elements['#account']->uid==$GLOBALS['user']->uid) print l(t('Edit your profile'), "user/{$GLOBALS['user']->uid}/edit");?></div>
 		<?php endif; ?>
-                    <div class="single-stat"><span class="stat-no"> <?php print l(get_node_count_by_user($elements['#account']->uid).' pastes', "users/".$elements['#account']->uid); ?></span></div>
+                    <div class="single-stat"><span class="stat-no"> <?php print l(get_node_count_by_user($elements['#account']->uid).' pastes', "user/".$elements['#account']->uid); ?></span></div>
                     <div class="single-stat"><a href="#"><span class="stat-no">  <?php  $follow = flag_get_flag('follow_users'); print l($follow->get_user_count($elements['#account']->uid).' following', "user/".$elements['#account']->uid."/following"); ?></span></div>
                     <div class="single-stat"><a href="#"><span class="stat-no"> <?php $follow = flag_get_flag('follow_users'); print l( $follow->get_count($elements['#account']->uid).' followers', "user/".$elements['#account']->uid."/followers"); ?> </span></div>
 

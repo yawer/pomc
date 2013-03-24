@@ -70,13 +70,13 @@
                     <!-- content group: width = grid_width - sidebar_first_width - sidebar_second_width -->
                     <div id="content-group" class="content-group region nested <?php print $content_group_width; ?>">
                       <div id="content-group-inner" class="content-group-inner inner">
-                        <?php // print theme('grid_block', array('content' => $breadcrumb, 'id' => 'breadcrumbs')); ?>
-                        <?php  print theme('grid_block', array('content' => $messages, 'id' => 'content-messages')); ?>
+                        <?php global $user; if($user->uid ==1) { // print theme('grid_block', array('content' => $breadcrumb, 'id' => 'breadcrumbs')); ?>
+                        <?php  print theme('grid_block', array('content' => $messages, 'id' => 'content-messages')); } ?>
 
                         <div id="content-region" class="content-region region nested">
                           <div id="content-region-inner" class="content-region-inner inner">
                             <a id="main-content-area"></a>
-                            <?php  print  theme('grid_block', array('content' => render($tabs), 'id' => 'content-tabs')); ?>
+                            <?php if($user->uid ==1) { print  theme('grid_block', array('content' => render($tabs), 'id' => 'content-tabs')); }?>
                             <?php print render($page['help']); ?>
                             <?php print render($title_prefix); ?>
                             <?php if ($title): ?>

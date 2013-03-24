@@ -7,6 +7,7 @@ engine = phptemplate
 
 ;stylesheets[all][] = css/fusion-starter-style.css
 stylesheets[all][] = css/pomc.css
+stylesheets[all][] = css/pomc1.css
 
 scripts[] = js/pomc.js
 ; --------------------------------------------------------------------------------

@@ -1,4 +1,86 @@
 <?php
+
+function pomc_customizations_menu() {
+  $items = array();
+  $items['post_facebook_msg/%'] = array(
+    'title' => 'post message',
+    'access callback' => TRUE,
+    'page callback' => 'post_facebook_msg',
+    'page arguments' => array(1),
+    'type' => MENU_CALLBACK,
+  );
+  $items['facebook-friends'] = array(
+    'title' => 'post message',
+    'access callback' => TRUE,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('pomc_fb_friend_list'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function pomc_fb_friend_list() {
+  $friend_list = facebook_album_fetcher_get_friend_list();
+  if (is_array($friend_list)) {
+    foreach ($friend_list as $key) {
+      $table_row['profile_pics'] = '<img src="https://graph.facebook.com/' . $key->id . '/picture">';
+      $table_row['name'] = $key->name;
+      $options = array(
+         'attributes' => array(
+           'id' => $key->id, 
+           'class' => 'invite-fb-friends'
+         ),
+         'fragment' => 'refresh',
+         'html' => TRUE,
+      );
+      $table_row['invite_friend'] = l('Invite', '', $options);
+      $table_data[$key->name] = $table_row;
+    }
+    ksort($table_data);
+    $header = array("Profile Pics", "Name", "Invite Friends");
+    $output = theme_table(
+      array(
+        "header" => $header,
+        "rows" => $table_data,
+        "attributes" => array("width" => "400px"),
+        "sticky" => FALSE,
+        "caption" => "",
+        "colgroups" => array(),
+        "empty" => t("No records available!"),
+      )
+    );
+    $form['show_data'] = array(
+      '#markup' => $output,
+    );
+  }
+  else {
+    $form['show_data'] = array(
+      '#markup' => "<span class='faf_error_class'>" . facebook_album_fetcher_show_error($friend_list) . "</span>",
+    );
+  }
+  return $form;
+}
+function post_facebook_msg($fb_uid) {
+  global $_fb, $_fb_app;
+  
+  $mail = $fb_uid . '@facebook.com';
+  $invite = invite_create();
+  $invite->email = $mail;
+  invite_save($invite);
+  $link = t('Your Invitation Link: ') . url('/invite/accept/' . $invite->reg_code, array('absolute' => TRUE));
+  /*$parameters = array(
+    'app_id' => $_fb->getAppId(),
+    'to' => $fb_uid,
+    'description' => $link,
+    'link' => 'http://beta.pasteonmycity.com',
+    'redirect_uri' => 'http://localhost/pomc_dev/post_msg',
+  );
+  $url = 'http://www.facebook.com/dialog/send?' . http_build_query($parameters);
+  echo '<script type="text/javascript">window.open(' . json_encode($url) . ', "Post message", width=100,height=100)</script>';*/
+  return drupal_json_output($link);
+}
+
+
 function pomc_customizations_init() {
   if (arg(0) == "user" && arg(1) == "login") {
     drupal_add_js(drupal_get_path("module", "pomc_customizations") . "/js/pomc_customizations.js");

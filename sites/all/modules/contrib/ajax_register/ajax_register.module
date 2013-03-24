@@ -326,16 +326,16 @@ function _ajax_register_execute_form($form_type, $form_state) {
       break;
 
     case 'login':
-      $title = t('Successful login');
-      $message = 'Login was successful. ';
+//      $title = t('Successful login');
+  //    $message = 'Login was successful. ';
       if ($redirect_behavior == 'refresh') {
         $message .= 'Page will now be reloaded.';
       }
       elseif ($redirect_behavior == 'default' || $redirect_behavior == 'custom') {
         $message .= 'Page will now be redirected.';
       }
-      drupal_set_message(check_plain(t($message)));
-      $commands[] = ctools_modal_command_display($title, theme('status_messages'));
+  //    drupal_set_message(check_plain(t($message)));
+      $commands[] =ctools_modal_command_dismiss();  //Changed this line to remove the login successful message.
       break;
   }
 
