@@ -1,86 +1,4 @@
 <?php
-
-function pomc_customizations_menu() {
-  $items = array();
-  $items['post_facebook_msg/%'] = array(
-    'title' => 'post message',
-    'access callback' => TRUE,
-    'page callback' => 'post_facebook_msg',
-    'page arguments' => array(1),
-    'type' => MENU_CALLBACK,
-  );
-  $items['facebook-friends'] = array(
-    'title' => 'post message',
-    'access callback' => TRUE,
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('pomc_fb_friend_list'),
-    'type' => MENU_CALLBACK,
-  );
-  return $items;
-}
-
-function pomc_fb_friend_list() {
-  $friend_list = facebook_album_fetcher_get_friend_list();
-  if (is_array($friend_list)) {
-    foreach ($friend_list as $key) {
-      $table_row['profile_pics'] = '<img src="https://graph.facebook.com/' . $key->id . '/picture">';
-      $table_row['name'] = $key->name;
-      $options = array(
-         'attributes' => array(
-           'id' => $key->id, 
-           'class' => 'invite-fb-friends'
-         ),
-         'fragment' => 'refresh',
-         'html' => TRUE,
-      );
-      $table_row['invite_friend'] = l('Invite', '', $options);
-      $table_data[$key->name] = $table_row;
-    }
-    ksort($table_data);
-    $header = array("Profile Pics", "Name", "Invite Friends");
-    $output = theme_table(
-      array(
-        "header" => $header,
-        "rows" => $table_data,
-        "attributes" => array("width" => "400px"),
-        "sticky" => FALSE,
-        "caption" => "",
-        "colgroups" => array(),
-        "empty" => t("No records available!"),
-      )
-    );
-    $form['show_data'] = array(
-      '#markup' => $output,
-    );
-  }
-  else {
-    $form['show_data'] = array(
-      '#markup' => "<span class='faf_error_class'>" . facebook_album_fetcher_show_error($friend_list) . "</span>",
-    );
-  }
-  return $form;
-}
-function post_facebook_msg($fb_uid) {
-  global $_fb, $_fb_app;
-  
-  $mail = $fb_uid . '@facebook.com';
-  $invite = invite_create();
-  $invite->email = $mail;
-  invite_save($invite);
-  $link = t('Your Invitation Link: ') . url('/invite/accept/' . $invite->reg_code, array('absolute' => TRUE));
-  /*$parameters = array(
-    'app_id' => $_fb->getAppId(),
-    'to' => $fb_uid,
-    'description' => $link,
-    'link' => 'http://beta.pasteonmycity.com',
-    'redirect_uri' => 'http://localhost/pomc_dev/post_msg',
-  );
-  $url = 'http://www.facebook.com/dialog/send?' . http_build_query($parameters);
-  echo '<script type="text/javascript">window.open(' . json_encode($url) . ', "Post message", width=100,height=100)</script>';*/
-  return drupal_json_output($link);
-}
-
-
 function pomc_customizations_init() {
   if (arg(0) == "user" && arg(1) == "login") {
     drupal_add_js(drupal_get_path("module", "pomc_customizations") . "/js/pomc_customizations.js");
@@ -224,7 +142,10 @@ $html_list .='</ul>';
 return $html_list;
 }
 
-
+function pomc_customizations_overlay_child_initialize() {
+  // Add our custom JavaScript.
+drupal_add_js(drupal_get_path("module", "pomc_customizations") . "/js/pomc_customizations.js");
+}
 
  
  function get_individual_paste($row, $view) {
@@ -253,6 +174,61 @@ return $html_list;
 return $output;
  
  }
+ 
+ function MODULENAME_ds_fields_info($entity_type) {
+  // Compile a list of image styles for the profile picture options.
+  $picture_formatters = array();
+  foreach (image_styles() as $formatter) {
+    $picture_formatters['MODULENAME_picture_' . $formatter['name']] = drupal_ucfirst(str_replace('_', ' ', $formatter['name']));
+  }
+
+  $fields = array();
+  $fields['userlist_picture'] = array(
+    'title' => t('Profile picture'),
+    'field_type' => DS_FIELD_TYPE_FUNCTION,
+    'function' => '_MODULENAME_ds_field_userlist_picture',
+    'properties' => array(
+      'formatters' => $picture_formatters,
+    ),
+  );
+
+  return array('user' => $fields);
+}
+
+/**
+ * Custom field displaying a user's profile picture.
+ */
+function _pomc_ds_field_userlist_picture($field) {
+  if ($profile = profile2_load_by_user($field['entity'])) {
+    if ($picture = field_get_items('profile2', $profile['user_profile'], 'field_profile_image')) {
+      $picture = reset($picture);
+    }
+
+    // Provide a default picture for users that have not yet uploaded one.
+    if (!isset($picture['uri']) || empty($picture['uri'])) {
+      $picture['uri'] = 'public://profile_pictures/profile_default.png';
+      $picture['width'] = 247;
+      $picture['height'] = 247;
+    }
+
+    // Retrieve the user's first name to use in the alt tag.
+    $first_name = field_get_items('profile2', $profile['user_profile'], 'field_name');
+    $first_name = !empty($first_name[0]['safe_value']) ? $first_name[0]['safe_value'] : t('User');
+
+    $vars = array(
+     // 'style_name' => str_replace('pomc_picture_', '', $field['profile-picture']),
+      'path' => $picture['uri'],
+      'width' => $picture['width'],
+      'height' => $picture['height'],
+      'alt' => t('@user\'s picture', array('@user' => $first_name)),
+    );
+
+    $image = theme('profile-picture', $vars);
+
+    return l($image, 'user/' . $field['entity']->uid, array('html' => TRUE));
+  }
+  return FALSE;
+}
  /*
 function user_profile_theming($account) {
 $output = '';
@@ -291,6 +267,49 @@ function get_node_count_by_user($id_user){
   return $record->count_paste;
   }
 }
+function pomc_customizations_preprocess_overlay(&$variables) {
+  //$variables['page']['#theme']='pago';
+   dsm($variables);
+}
+function pomc_customizations_flag($action, $flag, $content_id, $account) {
+/*
+//die();
+  // Follow another user
+  if ($action == 'flag' && $flag->content_type == 'user' && $flag->name == 'follow_users') {
+
+    $message_id = 'heartbeat_follow_user';
+    $variables = array(
+      '@user1' => l($account->name, 'user/' . $account->uid),
+      '@user2' => l(user_load($content_id)->name, 'user/' . $content_id),
+    );
+    heartbeat_api_log($message_id, $account->uid, $content_id, 0, 0, $variables);
+  }
+  
+ 
+    if ($action == 'flag' && $flag->types[0] == 'paste' && $flag->name == 'share') {
+ dpm($flag);
+    $message_id = 'heartbeat_share_paste';
+    $variables = array(
+      '@user1' => l($account->name, 'user/' . $account->uid),
+      '@node_title' => l(node_load($content_id)->title, 'node/' . $content_id),
+      '@author' => node_load($content_id)->name,
+    );
+    heartbeat_api_log($message_id, $account->uid, $content_id, 0, 0, $variables);
+  }
+  
+   if ($action == 'flag' && $flag->types[0] == 'paste' && $flag->name == 'like') {
+ dpm($flag);
+    $message_id = 'heartbeat_like_paste';
+    $variables = array(
+      '@user1' => l($account->name, 'user/' . $account->uid),
+      '@node_title' => l(node_load($content_id)->title, 'node/' . $content_id),
+       '@author' => node_load($content_id)->name,
+    );
+    heartbeat_api_log($message_id, $account->uid, $content_id, 0, 0, $variables);
+  }
+  */
+}
+
 function get_like_count($nid) {
   $like = flag_get_flag('like');
   //$share = flag_get_flag('share');
@@ -305,36 +324,12 @@ function get_share_count($nid) {
 $count = $share->get_count($nid);
 return $count;
 }
+function pomc_preprocess_table(&$variables){
+dsm($variables);
 
-function custom_menu_for_header() {
-global $user;
-
-
-$output = '';
-$output .= '<ul class="nav nav-pills pull-right">';
-$output .= '<li class="active">'.l("Home", "home").'</li>';
-$output .= '<li>'.l("Create Paste", "node/add/paste").'</li>';
-$output .= '<li>'.l("Notifications", "notifications").'</li>';
-
-
-$output .= '<li class="dropdown">'.l(user_load($user->uid)->field_full_name['und'][0]['value'], "user/".$user->uid, array("attributes" => array("class" => array("dropdown-toggle")))).'';
-
-
-$output .= '<ul class="dropdown-menu">';
-$output .=' <li>'.l("Inbox", "messages").'</li>';
-$output .= '<li>'.l("Followers", "user/".$user->uid."/followers").'</li>';
-$output .= '<li>'.l("Following", "user/".$user->uid."/following").'</li>';
-$output .= '<li>'.l("Invite Friends", "user/invite-friends").'</li>';
-$output .= '<li>'.l("Edit Profile", "user/".$user->uid."/edit").'</li>';
-$output .= '<li>'.l("Logout", "user/logout").'</li>';
-$output .='</ul></li></ul>';
-return $output;                
 }
-
-function pomc_customizations_admin_paths() {
-  $paths = array(
-    'request-invite/request-an-invite' => TRUE,
-  );
-  return $paths;
-}
+/**
+ * 
+ *
+ */
 ?>

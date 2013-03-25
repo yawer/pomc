@@ -582,6 +582,7 @@ To keep taxonomy filter in the middle
     padding: 4px 12px;
     text-align: center;
 	vertical-align: middle;
+	width: 54px;
 }
 
 .follow .flag-follow-users .flag-action:hover{
@@ -1035,8 +1036,7 @@ padding: 0px;
 #city-label{
  float: left;}
 #header-top-inner #block-block-1 .dropdown:hover ul{
-    z-index: 100000;
-    opacity: 1;
+	opacity: 1;
     -webkit-transition: all 300ms ease-in-out;
     -moz-transition: all 300ms ease-in-out;
     -ms-transition: all 300ms ease-in-out;
@@ -1045,15 +1045,14 @@ padding: 0px;
 
 }
 #header-top-inner #block-block-1 .dropdown-menu{
-    z-index: 100000;
-    opacity: 0;
+	 opacity: 0;
     -webkit-transition: all 300ms ease-in-out;
     -moz-transition: all 300ms ease-in-out;
     -ms-transition: all 300ms ease-in-out;
     -o-transition: all 300ms ease-in-out;
     transition: all 300ms ease-in-out;
 }
-.privatemsg-author-avatar img, .privatemsg-list-subject img{
+.privatemsg-author-avatar img{
     width:50px;
 } 
 
@@ -1083,18 +1082,8 @@ div.privatemsg-message ul.privatemsg-message-actions {float: right;padding: 0;}
     padding: 10px;
     width:97%;
 }
-.privatemsg-author-name,.privatemsg-message-participants .username,.msg-author-name .username, .privatemsg-author-name a{
+.privatemsg-author-name, .privatemsg-author-name a{
     color: #0088CC;
     font-size: 12px;
     font-weight: 700;	
 }
-.msg-author-name-title{margin: 7px 0 1px;}
-#checkbox-msg-select{float: left; width: 3%; height: 65px;}
-#checkbox-msg-select .form-item{margin-bottom: 1em;margin-top: 1.5em;}
-#msg-list-wrapper .user-picture{float: left;width:50px;padding: 6px;}
-#msg-list-wrapper{ border-bottom: 1px dotted #C5C5C5; float: right;  width: 97%;}
-#privatemsg-list-form .container-inline{    border-bottom: 2px solid #C5C5C5;padding-bottom: 10px;}
-.msg-time{float:right}
-#message-title-subject .user-picture{display:none}
-#author-image .privatemsg-list-message-link, .view-id-dashboard .grippie, .view-id-dashboard .form-actions{display:none}
-.view-id-dashboard .grippie

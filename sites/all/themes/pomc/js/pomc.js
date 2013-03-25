@@ -83,16 +83,16 @@ $(".form-textarea-wrapper").bind("keyup", function(e){
       });
 
 //here's the magic to create multstep registration.
-	$('.previous_button, .last_previous, #edit-field-city, #edit-field-dateofbirth, #edit-field-gender, #edit-field-description, .next_previous, #edit-actions--2, #edit-field-category, #edit-legal').hide();
-	$('.next_first').click(function(){
-	  $('#edit-account, .next_first, #edit-field-profile-pic, #edit-field-full-name').hide();
-	  $('#edit-field-city, #edit-field-dateofbirth, #edit-field-gender, #edit-field-description, .next_previous, #edit-field-category, .previous_button, #edit-actions--2, #edit-legal').show();
+	$('#pid-user-register .previous_button, #pid-user-register .last_previous, #pid-user-register #edit-field-city, #pid-user-register #edit-field-dateofbirth, #pid-user-register #edit-field-gender, #pid-user-register #edit-field-description, #pid-user-register .next_previous, #pid-user-register #edit-actions--2, #pid-user-register #edit-field-category, #pid-user-register #edit-legal').hide();
+	$('#pid-user-register .next_first').click(function(){
+	  $('#pid-user-register #edit-account, #pid-user-register .next_first, #pid-user-register #edit-field-profile-pic, #pid-user-register #edit-field-full-name').hide();
+	  $('#pid-user-register #edit-field-city, #pid-user-register #edit-field-dateofbirth, #pid-user-register #edit-field-gender, #pid-user-register #edit-field-description, #pid-user-register .next_previous, #pid-user-register #edit-field-category, #pid-user-register .previous_button, #pid-user-register #edit-actions--2, #pid-user-register #edit-legal').show();
 	});
 	// Second step
 	//click action on previous
-	$('.previous_button').click(function(){
-	  $('#edit-account, #edit-field-profile-pic, .next_first, #edit-field-full-name').show();
-	  $('#edit-legal, #edit-field-city, #edit-field-dateofbirth, #edit-field-gender, #edit-field-description, .next_previous, #edit-field-category, .previous_button, #edit-actions--2').hide();
+	$('#pid-user-register .previous_button').click(function(){
+	  $('#pid-user-register #edit-account, #pid-user-register #edit-field-profile-pic, #pid-user-register .next_first, #pid-user-register #edit-field-full-name').show();
+	  $('#pid-user-register #edit-legal, #pid-user-register #edit-field-city, #pid-user-register #edit-field-dateofbirth, #pid-user-register #edit-field-gender, #pid-user-register #edit-field-description, #pid-user-register .next_previous, #pid-user-register #edit-field-category, #pid-user-register .previous_button, #pid-user-register #edit-actions--2').hide();
 	});
 
 // Comment autosubmmit on home

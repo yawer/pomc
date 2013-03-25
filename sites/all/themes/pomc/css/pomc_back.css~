@@ -487,6 +487,7 @@ color: rgba(0, 0, 0, 0.5 );
     box-sizing: border-box;
     box-shadow: inset 0 1px rgba(237, 237, 237, 0.49);
     text-align: center;
+    height:185px;
 }
 .pull-left {
 	float: left;
@@ -1088,13 +1089,13 @@ div.privatemsg-message ul.privatemsg-message-actions {float: right;padding: 0;}
     font-size: 12px;
     font-weight: 700;	
 }
-.msg-author-name-title{margin: 7px 0 1px;}
-#checkbox-msg-select{float: left; width: 3%; height: 65px;}
-#checkbox-msg-select .form-item{margin-bottom: 1em;margin-top: 1.5em;}
-#msg-list-wrapper .user-picture{float: left;width:50px;padding: 6px;}
-#msg-list-wrapper{ border-bottom: 1px dotted #C5C5C5; float: right;  width: 97%;}
-#privatemsg-list-form .container-inline{    border-bottom: 2px solid #C5C5C5;padding-bottom: 10px;}
+.privatemsg-list-participants {
+}
+#msg-list-wrapper .author-image{}
+#msg-list-wrapper-outer{ width:100%}
+#checkbox-msg-select{float: left; width: 3%;}
+#msg-list-wrapper .user-picture{float: left;width:50px;padding: 5px;}
+#msg-list-wrapper{   float: right;  width: 97%;}
+#msg-list-wrapper .privatemsg-list-message-link{display: block;padding-top: 30px;}
+.msg-author-name-title{margin-bottom: -24px;margin-left: 59px;}
 .msg-time{float:right}
-#message-title-subject .user-picture{display:none}
-#author-image .privatemsg-list-message-link, .view-id-dashboard .grippie, .view-id-dashboard .form-actions{display:none}
-.view-id-dashboard .grippie
