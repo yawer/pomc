@@ -36,7 +36,10 @@
 //dsm($user);
 ?>
 <div class="user-profile clearfix">
-                <div class="user-pic pull-left"><?php print render($user_profile['user_picture']); ?></div>
+                <div class="user-pic pull-left"><?php print render($user_profile['user_picture']); ?>
+                <ul class = "extra-links"><li class= "extra-link-list"><?php print l("Send message", 'messages/new/'.$elements['#account']->uid); ?></li>
+                <li class= "extra-link-list"><?php print flag_create_link('spam', $elements['#account']->uid); ?></li>
+      </ul></div>
                 <div class="user-desc  pull-left">
                     <h2 class="user-name"><?php print format_username($elements['#account']); ?></h2>
                     <p class="user-city"><?php print render($user_profile['field_city']); ?></p>

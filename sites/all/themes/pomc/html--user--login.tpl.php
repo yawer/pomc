@@ -126,7 +126,7 @@
 <div id="register" class="modal modal-landing hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-      <h2 class="form-signin-heading">Please register</h2>
+      <h2 class="form-signin-heading">Asr</h2>
   </div>
   <div class="modal-body">
       <form class="form-signin">

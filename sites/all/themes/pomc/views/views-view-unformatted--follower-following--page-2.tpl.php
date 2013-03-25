@@ -14,16 +14,18 @@
 $user_id = arg(1);
 $user_profile = user_load($user_id);
 ?>
-<div class="user-profile clearfix">
+<div class="user-profile profile-follower-page  clearfix">
 
 
                 <div class="user-pic pull-left"><?php
-                print theme('image_style', array('style_name' => 'profile-picture', 'path' => $user_profile->field_profile_pic['und'][0]['uri'], 'alt' => $user_profile->name, 'title' => $user_profile->name));?></div>
+                print theme('image_style', array('style_name' => 'profile-picture', 'path' => $user_profile->field_profile_pic['und'][0]['uri'], 'alt' => $user_profile->name, 'title' => $user_profile->name));?><div><ul class = "extra-links"><li class= "extra-link-list"><?php print l("Send message", 'messages/new/'.$user_id); ?></li>
+                <li class= "extra-link-list"><?php print flag_create_link('spam', $user_id); ?></li>
+      </ul></div></div>
                 <div class="user-desc  pull-left">
                     <h2 class="user-name"><?php print $user_profile->field_full_name['und'][0]['value']; ?></h2>
                     <p class="user-city"> <?php print taxonomy_term_load($user_profile->field_city['und'][0]['tid'])->name; ?></p>
                     <p class="user-intro"><?php print $user_profile->field_description['und'][0]['value']; ?></p>
-                    <div class="follow"><?php //print $user_profileflags']['follow_users']; ?></div>
+                    <div class="follow"><?php print flag_create_link('follow_users', $user_id); ?></div>
                 </div>
                 <div class="user-stats  pull-left">
 		<?php if($user_id==$user->uid): ?>

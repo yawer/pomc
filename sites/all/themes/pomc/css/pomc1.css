@@ -106,3 +106,26 @@ margin-right: 10px;
 float:left;
 font-size:14px;
 }
+
+.profile-follower-page .follow{
+padding-left: 20px;
+}
+
+.user-profile .extra-links{
+margin: 0;
+padding: 0;
+padding-top: 5px;
+padding-bottom: 5px;
+}
+
+.user-profile .extra-links li{
+margin: 0;
+padding: 0;
+border-bottom: 1px solid #F2F2F2;
+
+}
+
+.user-profile .extra-links li a{
+font-size: 13px;
+color: #111;
+}
