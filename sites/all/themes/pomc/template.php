@@ -552,7 +552,7 @@ function pomc_theme_paths($theme) {
 /**
 */
 function pomc_preprocess_overlay(&$variables) {
-  dsm($variables);
+  //dsm($variables);
 }
 
 //thiming private msg

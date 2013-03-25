@@ -578,7 +578,7 @@ $output = $output . "<div id = 'msg-list-wrapper-outer'>
     <div class= 'msg-author-name-title'><span class='msg-author-name'>". $list_item['data'][2]['data'] ."</span><span class='msg-time'>". $list_item['data'][4]['data'] ."</span>
     </div>
   
-    <div id= 'author-image'>". $list_item['data'][1]['data'] ."</div>
+    <div id= 'message-title-subject'>". $list_item['data'][1]['data'] ."</div>
     </div>
 
 </div>

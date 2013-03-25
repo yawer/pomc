@@ -110,13 +110,14 @@ height: 89px;
 padding-top: 14px;
 }
 
-.content-box {
+/**.content-box {
 
 margin-right: auto;
 margin-left: auto;
 width: 990px;
 
 }
+*/
 /**this is removed to have 4 column view **/
 .content-box .grid12-12 {
 width: 990px; !important
@@ -137,7 +138,6 @@ height: 48px;
 #header-top-wrapper{
 height: 48px;
 float:left;
-width:206px;
 min-width: 206px;
 }
 #search-block-form {
@@ -936,7 +936,7 @@ background-color: white;
 .page-node-add-paste #overlay #overlay-content {
 padding: 0px;
 }
-.form-type-textarea label {display:none!important;}
+.view-id-dashboard .form-type-textarea label {display:none!important;}
 .paste-container .username{ color:#6F6A4A;text-decoration: none;}
 .paste-container .follow{padding: 20px 0 20px 20px;}
 .comment-on-paste .form-textarea-wrapper textarea{padding: 5px;height: 55px; width: 465px;background-color: #FFFFFF;border: 1px solid #CCCCCC;border-radius: 5px 5px 5px 5px;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;display: inline !important; transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;}
@@ -944,9 +944,9 @@ padding: 0px;
 .view-id-user_interests .views-row{float:left; margin-left: 10px;}
 /*Overlay fixing closed!*/
 /* main menu***********/
-#header-top-inner #block-block-1{float:right;width: 46%; /*70%;*/}
-#block-views--exp-dashboard-page_3{width:35%;}
-#header-top-inner #block-block-1 ul li {display: inline;font-size: 12px;line-height: 132%; padding: 8px;}
+#header-top-inner #block-block-1{float: right;width: 33%;}
+#block-views--exp-dashboard-page_3{width:33%;}
+#header-top-inner #block-block-1 ul li {display: inline;font-size: 12px;line-height: 132%; padding: 5px;}
 #header-top-inner #block-block-1 .dropdown-menu{
     border-radius: 6px 6px 6px 6px;
     background-clip: padding-box;
@@ -1026,7 +1026,7 @@ padding: 0px;
     text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
     vertical-align: middle;
 }
-#edit-keys-wrapper .form-type-textfield .form-text{background: none repeat scroll 0 0 rgba(255, 255, 255, 0.6);border: 1px solid #ABABAA;border-radius: 30px 0 0 30px;height: 25px;max-width: 100%;width: 235px;}
+#edit-keys-wrapper .form-type-textfield .form-text{background: none repeat scroll 0 0 rgba(255, 255, 255, 0.6);border: 1px solid #ABABAA;border-radius: 30px 0 0 30px;height: 25px;max-width: 100%;width: 235px;padding-left: 10px;}
 #views-exposed-form-dashboard-page-3 .views-exposed-form .views-exposed-widget {padding: 0.5em 0 0 0;}
 #block-views--exp-dashboard-page_2 .content div{
  float: left;
@@ -1097,4 +1097,8 @@ div.privatemsg-message ul.privatemsg-message-actions {float: right;padding: 0;}
 .msg-time{float:right}
 #message-title-subject .user-picture{display:none}
 #author-image .privatemsg-list-message-link, .view-id-dashboard .grippie, .view-id-dashboard .form-actions{display:none}
-.view-id-dashboard .grippie
+.user-profile .user-desc {padding-top: 10px;}
+#header-top { width: auto;}
+#block-block-2{width:34%;}
+#header-top-inner{margin: 0 auto;width: 1100px;}
+#block-block-2 p{margin: -3px 0 0; text-align: center;}
