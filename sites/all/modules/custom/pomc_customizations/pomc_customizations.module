@@ -1,5 +1,5 @@
 <?php
-
+/*
 function pomc_customizations_menu() {
   $items = array();
   $items['post_facebook_msg/%'] = array(
@@ -76,10 +76,10 @@ function post_facebook_msg($fb_uid) {
     'redirect_uri' => 'http://localhost/pomc_dev/post_msg',
   );
   $url = 'http://www.facebook.com/dialog/send?' . http_build_query($parameters);
-  echo '<script type="text/javascript">window.open(' . json_encode($url) . ', "Post message", width=100,height=100)</script>';*/
+  echo '<script type="text/javascript">window.open(' . json_encode($url) . ', "Post message", width=100,height=100)</script>';
   return drupal_json_output($link);
 }
-
+*/
 
 function pomc_customizations_init() {
   if (arg(0) == "user" && arg(1) == "login") {
@@ -123,7 +123,7 @@ if(isset($city_name)) {
 $output .= '<div>City: </div><div id="city-label">'.$city_name.'</div>';
 }
 else {
-$output .= '<div>City: </div><div id="city-label">City</div>';
+$output .= '<div>City: </div><div id="city-label">'.taxonomy_term_load(user_load($user->uid)->field_city['und'][0]['tid'])->name.'</div>';
 }
 
 $output .= '<ul id = "city-list-options">';
@@ -201,7 +201,20 @@ $form['Buttons_second'] = array(
     '#markup' => '<div class="previous_button"><< Previous</div>',
     '#weight' => 30,
     );
-dsm($form);
+}
+ if($form_id == 'paste_node_form') {
+$form['field_city']['und']['#options']['_none'] = taxonomy_term_load(user_load($user->uid)->field_city['und'][0]['tid'])->name;
+$form['field_category']['und']['#options']['_none'] = 'Select a Category';
+$form['actions']['submit']['#value'] = t('Create Paste');
+ $form['actions']['cancel'] = array(
+      '#type'   => 'submit',
+      '#value'  => t('Cancel'),
+      '#access' => TRUE,
+      '#weight' => 15,
+      '#class' => array('cancel-button'),
+      '#submit' => array('pomc_customizations_form_cancel', 'node_form_submit_build_node'),
+      '#limit_validation_errors' => array(),
+    );
 }
 if ($form_id == "profile2_edit_user_profile_form"){
 /*
@@ -211,6 +224,11 @@ drupal_add_js(drupal_get_path("module", "pomc_customizations") . "/js/pomc_custo
 */
 }
 
+}
+
+function pomc_customizations_form_cancel($form, &$form_state) {
+ $destination = $_SERVER['HTTP_REFERER'];;
+  drupal_goto($destination);
 }
 
 function get_children_html($children, $taxonomy_name, $tid){

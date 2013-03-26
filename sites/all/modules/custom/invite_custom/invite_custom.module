@@ -64,12 +64,32 @@ function invite_custom_form_alter(&$form, &$form_state, $form_id) {
 
 function invite_custom_contacts_importing_submit(&$form, &$form_state) {
   global $user;
+  $confirmed_list = $contact_list = array();
+  foreach($form_state['storage']['contacts'] as $contact) {
+    $contact_list[$contact['email']] = $contact['name'];
+  }
+  
+  foreach($form_state['values']['confirmed_list'] as $value) {
+    if ($value) {
+      $confirmed_list[] = array('email' => $value, 'name' => $contact_list[$value]);
+    }
+  }
+  
+  $query = db_select("invite_friends_list", "ifl")
+  ->fields("ifl", array('uid', 'mail_id', 'friends'))
+  ->condition("uid", $user->uid)
+  ->condition("mail_id", $form_state['storage']['email'])
+  ->execute()
+  ->fetchAll();
+
+$complete_friends_list = array_merge($confirmed_list, unserialize($query[0]->friends));
+  
   $invite_contacts = array(
     'method' => $form_state['storage']['provider']['provider_name'],
     'mail_id' => $form_state['storage']['email'],
     'contacts_count' => count($form_state['values']['confirmed_list']),
     'uid' => $user->uid,
-    'friends' => serialize($form_state['storage']['contacts']),
+    'friends' => serialize($complete_friends_list),
   );
 
   $query = (bool)db_select("invite_friends_list", "ifl")->fields("ifl")->condition("uid", $user->uid)->condition("mail_id", $form_state['storage']['email'])->execute()->fetchAssoc();
@@ -82,10 +102,14 @@ function invite_custom_contacts_importing_submit(&$form, &$form_state) {
 
   if ($result) {
     drupal_set_message(check_plain("Seccessfully Imported your Contacts"), "status");
+    $commands[] =ctools_modal_command_dismiss(); 
+    return $commands;
   }
   else {
     drupal_set_message(check_plain("Failed Imported your Contacts"), "error");
+    
   }
+  
 }
 function invite_friends() {
   global $user;

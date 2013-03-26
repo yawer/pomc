@@ -76,7 +76,7 @@ $image = theme('image_style', array('style_name' => 'activity_avatar', 'path' =>
 $message_id = $heartbeat->message_id;
 if($target_uid == $user->uid && $message_id =='heartbeat_follow_user') {
 
- $output .= '<li class = "notification-item"><div class= "notification-image">'.$image.'</div><div class="notification-text">'.l($user_profile->name, "users/".$uid).' now follows you</div></li>';
+ $output .= '<li class = "notification-item"><div class= "notification-image">'.$image.'</div><div class="notification-text">'.l($user_profile->name, "user/".$uid).' now follows you</div></li>';
 
 }
 
@@ -90,14 +90,14 @@ if($target_uid != $user->uid) {
  }
 $node = node_load($nid);
  if(($node->uid == $user->uid) && ($uid != $user->uid)) {
-  $output .= '<li class = "notification-item"><div class= "notification-image">'.$image.'</div><div class="notification-text">'.l($user_profile->name, "users/".$uid).' '. $activity_label.' on your paste '.l($node->title, "node/".$nid).'</div></li>';
+  $output .= '<li class = "notification-item"><div class= "notification-image">'.$image.'</div><div class="notification-text">'.l($user_profile->name, "user/".$uid).' '. $activity_label.' your paste '.l($node->title, "node/".$nid).'</div></li>';
  }
  }
 
 }
 
  if($message_id == 'heartbeat_add_comment' && node_load($nid)->uid == $user->uid && $uid != $user->uid) {
-  $output .= '<li class = "notification-item"><div class= "notification-image">'.$image.'</div><div class="notification-text">'.l($user_profile->name, "users/".$uid).' commented on your paste '.l(node_load($nid)->title, "node/".$nid).'</div></li>';
+  $output .= '<li class = "notification-item"><div class= "notification-image">'.$image.'</div><div class="notification-text">'.l($user_profile->name, "user/".$uid).' commented on your paste '.l(node_load($nid)->title, "node/".$nid).'</div></li>';
  }
 
 }
