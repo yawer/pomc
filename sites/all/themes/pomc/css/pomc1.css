@@ -129,3 +129,187 @@ border-bottom: 1px solid #F2F2F2;
 font-size: 13px;
 color: #111;
 }
+
+.page-node-add-paste {
+
+}
+.page-node-add-paste #main-wrapper {
+width: 520px;
+min-width:520px;
+border-style: solid;
+margin:0;
+padding:0;
+border-left: 1px;
+border-right: 2px;
+-webkit-box-shadow: 1px 1px 0px rgba(110, 109, 93, 0.3), 3px 3px 2px rgba(110, 109, 93, 0.2);
+-moz-box-shadow: 1px 1px 0px rgba(110,109,93,0.3), 3px 3px 2px rgba(110,109,93,0.2);
+box-shadow: 1px 1px 0px rgba(110, 109, 93, 0.3), 3px 3px 2px rgba(110, 109, 93, 0.2);
+border-top: 2px solid #649D1B;border-radius: 10px 0px 0px 0px;
+border-bottom: 1px solid white;border-radius: 0px 0px 5px 5px;
+}
+
+
+.page-node-add-paste .context-box .grid12-12, .page-node-add-paste .grid12-12 {
+width: 518px;
+min-width: 518px;
+}
+
+.page-node-add-paste #overlay {
+margin:0px;
+min-width:518px;
+width:518px;
+background-color: #649D1B;
+border-right: 2px solid #649D1B;
+border-top: 1px solid #649D1B;border-radius: 5px 0px 0px 0px;
+
+}
+.page-node-add-paste #overlay #overlay-content {
+
+display: none;
+}
+
+.page-node-add-paste .big-box{
+background: none;
+}
+.page-node-add-paste #overlay-titlebar {
+line-height:40px;
+padding: 9px 15px;
+
+}
+.page-node-add-paste #overlay-titlebar h1 {
+font-size:31.5px;
+}
+.page-node-add-paste #overlay-close-wrapper {
+.position: absolute;
+float: right;
+position: relative;
+left: 16px;
+bottom: 68px;
+}
+
+.page-node-add-paste #page-inner {
+top:10%;
+position: fixed;
+left: 32%;
+z-index: 1050;
+width: 520px;
+min-width: 520px;
+background-color: white;
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+outline: 0;
+-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+-moz-box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+-webkit-background-clip: padding-box;
+-moz-background-clip: padding-box;
+background-clip: padding-box;
+border-top: 1px solid #649D1B;
+border-bottom: 1px solid #FFF;
+border-radius: 5px 0px 5px 5px;
+}
+
+#paste-node-form .form-item label{
+float: left;
+width: 145px;
+padding-top: 5px;
+text-align: right;
+display: block;
+margin-bottom: 5px;
+font-size: 14px;
+font-weight: normal;
+line-height: 20px;
+}
+#paste-node-form .form-item {
+margin-bottom: 20px;
+}
+
+#paste-node-form input#edit-title{
+width: 270px;
+margin-left: 15px;
+border: 1px solid #CCCCCC;border-radius: 5px 5px 5px 5px;
+height: 25px;}
+
+#paste-node-form input#edit-field-paste-image-und-0-upload{
+width: 270;
+margin-left: 15px;
+}
+
+ #paste-node-form textarea {
+ 
+ width: 276px;
+margin-left: 15px;
+border: 1px solid #CCCCCC;border-radius: 5px 5px 5px 5px;
+ 
+ }
+
+#paste-node-form textarea {
+display:inline;
+}
+#paste-node-form select {
+margin-left: 15px;
+}
+
+ #paste-node-form .grippie {
+ display:none;
+ 
+ }
+#paste-node-form .description {
+margin-left: 160px;
+}
+.page-node-add-paste .content {
+position: relative;
+overflow-y: auto;
+border-bottom: 3px solid white;border-radius: 10px 10px 10px 10px;
+}
+#paste-node-form {
+margin: 0 0 20px;
+}
+input:focus, textarea:focus {
+border-color: rgba(82, 168, 236, 0.8);
+outline: 0;
+outline: thin dotted 9;
+-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(82, 168, 236, 0.6);
+-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6);
+box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(82, 168, 236, 0.6);
+}
+
+.page-node-add-paste  #edit-field-category {
+margin-bottom: 20px;
+border-bottom: 1px solid #CCCCCC;
+}
+select {
+width: 150px;
+padding: 3px 4px;
+height: 28px;
+border-radius: 0;
+background-color: #F0F0F0;
+margin-right: 20px;
+border: 1px solid #CCC;
+line-height: 30px;
+}
+select:focus, input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focus {
+outline: thin dotted #333;
+outline: 5px auto -webkit-focus-ring-color;
+outline-offset: -2px;
+}
+
+select option {
+background-color: white;
+}
+
+.page-node-add-paste .form-actions{
+margin-left: 160px;
+}
+.page-node-add-paste .form-actions #edit-cancel{
+margin-left: 15px;
+}
+.page-node-add-paste .form-actions #edit-submit{
+background-color: #5BB75B;
+color:white;
+font-size: 14px;
+}
+.page-node-add-paste .form-actions #edit-submit:hover {
+background-color: #51A351
+}

@@ -1,5 +1,5 @@
 <?php
-global $base_path;
+
 /**
  * @file
  * Default theme implementation to display the basic html structure of a single
@@ -85,10 +85,9 @@ global $base_path;
             <?php print $login; ?>
             
             <span>or</span>
-             
-             
-                <a href="<?php print $base_path;?>modal_forms/nojs/webform/490" role="button" class="ctools-use-modal ctools-modal-modal-popup-large btn btn-large btn-success" data-toggle="modal">Request an Invite</a>
-            </p>
+
+
+<a href="<?php print $base_path;?>user/1" role="button" class="ctools-use-modal ctools-modal-modal-popup-large btn btn-large btn-success" data-toggle="modal">Request an invite</a>            </p>
         </div>
     </div>
     <footer>&copy; 2012 Paste on my City</footer>
@@ -126,7 +125,7 @@ global $base_path;
 <div id="register" class="modal modal-landing hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-      <h2 class="form-signin-heading">Please register</h2>
+      <h2 class="form-signin-heading">Asr</h2>
   </div>
   <div class="modal-body">
       <form class="form-signin">
