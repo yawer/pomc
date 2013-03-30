@@ -313,3 +313,6 @@ font-size: 14px;
 .page-node-add-paste .form-actions #edit-submit:hover {
 background-color: #51A351
 }
+.flag-waiting .flag-throbber {
+background: url("../img/flag-throbber.gif") no-repeat scroll 50% 50% !important;
+}
