@@ -1,0 +1,44 @@
+<?php 
+/**
+ * Implements hook_schema().
+ */
+function inviter_schema() {
+  $schema['inviter'] = array(
+    'description' => 'The base table for inviter.',
+    'fields' => array(
+      'iid' => array(
+        'description' => 'The primary identifier for a invite.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'Stores the user id of the inviter.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'inviter_token' => array(
+        'description' => 'Stores the token of the invitee upon registration.',
+        'type' => 'varchar',
+        'length' => 30,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'invited_by_token' => array(
+        'description' => 'Stores the creation time of the invite.',
+        'type' => 'varchar',
+        'length' => 30,
+        'default' => '',
+      ),
+    ),
+    'unique keys' => array(
+      'reg_code' => array('inviter_token'),
+    ),
+    'indexes' => array(
+      'uid'   => array('uid'),
+    ),
+    'primary key' => array('iid'),
+  );
+return $schema;
+}

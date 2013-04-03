@@ -1,0 +1,7 @@
+name = Inviter
+description = Allows your users to send invite to join site.
+core = 7.x
+package = Inviter
+dependencies[] = token
+files[] = invite.module
+configure = admin/config/people/inviter

@@ -1,0 +1,410 @@
+<?php
+
+/**
+ * @file
+ * Allows your users to send and track invitations to join your site.
+ */
+
+/**
+ * Session names.
+ */
+define('INVITER_SESSION', 'inviter_code');
+define('INVITER_TEAM', 'inviter_team');
+
+/**
+ * Registration settings form values.
+ */
+define('INVITER_USER_REGISTER_INVITATION_ONLY', 3);
+
+/**
+ * Implements hook_help().
+ */
+function inviter_help($path, $arg) {
+  switch ($path) {
+    // Display module help
+    case 'admin/help#inviter':
+      return _inviter_module_help();
+
+    // Display introductory text on user profile pages
+    case 'user/%/inviter':
+      $output = '<p>' . t("The invitations shown on this page have been used to join the site. Clicking on an username takes you to the user's profile page.");
+      break;
+
+    default:
+      return;
+  }
+  return $output;
+}
+
+/**
+ * Display module help.
+ */
+function _inviter_module_help() {
+  $file = drupal_get_path('module', 'inviter') . '/README.txt';
+  if (file_exists($file)) {
+    return _filter_autop(check_plain(file_get_contents($file)));
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function inviter_theme() {
+  return array(
+    'inviter_user_overview' => array(
+      'variables' => array('items' => NULL),
+    ),
+  );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function inviter_permission() {
+  return array(
+    'administer inviter' => array(
+      'title' => t('Administer invitations'),
+      'description' => t('Administer all invitations'),
+    ),
+    'send inviter invites' => array(
+      'title' => t('Send invitations'),
+      'description' => t('Send invitations to other users.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function inviter_menu() {
+  // Admin menu items
+  $items['admin/people/inviter'] = array(
+    'title' => 'Inviter',
+    'page callback' => 'inviter_admin_overview',
+    'access arguments' => array('administer inviter'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['admin/config/people/inviter'] = array(
+    'title' => 'Invite',
+    'description' => 'Modify invitation settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('invite_settings'),
+    'access arguments' => array('administer inviter'),
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 10,
+  );
+
+  $items['inviter/register/%user/%taxonomy_term'] = array(
+    'title' => 'Example RSS feed',
+    'page callback' => 'inviter_accept',
+    'page arguments' => array(2,3),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['inviter/register/%user'] = array(
+    'title' => 'Example RSS feed',
+    'page callback' => 'inviter_accept',
+    'page arguments' => array(2),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['inviter/invite/facebook'] = array(
+    'title' => 'Share invite on facebook',
+    'page callback' => 'inviter_share_facebook',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['inviter/invite/facebook/team/%'] = array(
+    'title' => 'Share invite on facebook',
+    'page callback' => 'inviter_share_facebook_team',
+    'page arguments' => array(4),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+
+/*
+  $items['user/%user/invites'] = array(
+    'title' => 'Invitations',
+    'page callback' => 'inviter_user_overview',
+    'page arguments' => array(1),
+    'access arguments' => array('send inviter invites'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  */
+  return $items;
+}
+
+function inviter_accept($inviter, $group = NULL) {
+    $_SESSION[INVITER_SESSION] = NULL;
+    $_SESSION[INVITER_TEAM] = NULL;
+    $inviter_tokens = inviter_get_tokens($inviter->uid);
+
+    $_SESSION[INVITER_SESSION] = $inviter_tokens->inviter_token;
+    if(isset($group)) {
+      $_SESSION[INVITER_TEAM] = $group;
+    }
+    drupal_goto(variable_get('inviter_registration_path', 'user/register'));
+}
+
+
+
+/**
+ * Implements hook_user_insert().
+ */
+function inviter_user_insert(&$edit, &$account, $category) {
+
+  $inviter = array();
+
+  $inviter['uid'] = $account->uid;
+  $inviter['invited_by_token'] = isset($_SESSION[INVITER_SESSION]) ? $_SESSION[INVITER_SESSION] : NULL;
+  $inviter['inviter_token'] = user_password(20);
+
+
+    $tid = $_SESSION[INVITER_TEAM]->tid;
+  if (!empty($tid)) {
+  db_insert('field_data_field_team')
+  ->fields(array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'deleted' => 0,
+      'entity_id' => $account->uid,
+      'revision_id' => $account->uid,
+      'language' => 'und',
+      'delta' => 0,
+      'field_team_tid' => $tid,
+    ))
+  ->execute();
+
+  db_insert('field_revision_field_team')
+  ->fields(array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'deleted' => 0,
+      'entity_id' => $account->uid,
+      'revision_id' => $account->uid,
+      'language' => 'und',
+      'delta' => 0,
+      'field_team_tid' => $tid,
+    ))
+  ->execute();
+  }
+ 
+  inviter_save_token($inviter);
+
+  $_SESSION[INVITER_SESSION] = NULL;
+  $_SESSION[INVITER_TEAM] = NULL;
+
+}
+
+
+function inviter_form_user_register_form_alter(&$form, &$form_state, $form_id) {
+
+    $tid = $_SESSION[INVITER_TEAM]->tid;
+  if($tid) {
+    $form['field_team']['und']['#type'] = 'hidden';
+  }
+
+}
+
+
+function inviter_user_delete($account) {
+
+  return db_delete('inviter')
+      ->condition('uid', $account->uid)
+      ->execute();
+
+}
+
+function inviter_get_tokens($uid) {
+  return db_select('inviter', 'inviter')
+    ->condition('uid', $uid, '=')
+    ->fields('inviter')
+    ->execute()
+    ->fetchObject();
+}
+
+function inviter_save_token($inviter) {
+
+    return $id = db_insert('inviter')
+    ->fields(array(
+    'uid' => $inviter['uid'],
+    'inviter_token' => $inviter['inviter_token'],
+    'invited_by_token' => $inviter['invited_by_token'],
+  ))
+    ->execute();
+}
+
+
+function inviter_user_overview($account) {
+
+  if($account){
+    $user = $account;
+  }
+  
+  else {
+     global $user;
+  }
+ 
+  $invite = inviter_get_tokens($user->uid);
+
+  $profile_access = user_access('access user profiles');
+
+  $query = db_select('inviter', 'i')
+    ->fields('i')
+    ->extend('PagerDefault')
+    ->condition('i.invited_by_token', $invite->inviter_token, '=');
+
+  $result = $query->execute()->fetchAll();
+
+   $row = array();
+  foreach ($result as $invited_user_invite) {
+ 
+    $invited_user = user_load($invited_user_invite->uid);
+    $account_exists = !is_null($invited_user->uid);
+
+        if ($profile_access && $account_exists && $invited_user->status > 0) {
+          $row[] = $invited_user;
+        }
+       
+  }
+  return theme('inviter_user_overview', array('items' => $row));
+}
+
+function theme_inviter_user_overview($variables) {
+
+  $output = '';
+  $items = $variables['items'];
+
+  $user_items = array();
+
+  if (count($items) > 0) {
+    foreach ($items as $key => $item) {
+      $user_items[] = theme('username', array('account' => $item));
+    }
+    $output  .= theme('item_list', array('items' => $user_items));
+    $output .= theme('pager');
+  }
+  else {
+    $output .= t('No invitee joined yet.');
+  }
+
+  return $output;
+}
+
+/**
+ * Implements hook_user_view().
+ */
+function inviter_user_view($account, $view_mode) {
+  global $user;
+  if (user_access('send inviter invites') && $user->uid == $account->uid) {
+    $invite_list = inviter_user_overview($account);
+    $invite_markup = inviter_invite_content();
+    if ($invite_list) {
+      $account->content['inviter'] = array(
+        '#type' => 'user_profile_item',
+        '#title' => '<h2 id="invites"><i class="icon-leaf"></i> Invitations</h2>',
+        '#weight' => 1,
+        '#markup' => '<div class="invitation_invite">' . $invite_markup .'</div><div  class="invitation_invited">'. $invite_list .'</div>',
+      );
+    } 
+  }
+}
+
+/**
+ * Implements hook_field_extra_fields().
+ */
+function inviter_field_extra_fields() {
+  $extra['user']['user'] = array(
+    'display' => array(
+      'inviter' => array(
+        'label' => t('Inviter'),
+        'description' => t('Inviter info'),
+        'weight' => 0,
+      )
+    )
+  );
+  return $extra;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function inviter_block_info() {
+  $blocks['inviter']['info'] = t('Invite');
+  // Not worth caching.
+  $blocks['inviter']['cache'] = DRUPAL_NO_CACHE;
+  $blocks['inviter']['properties']['administrative'] = TRUE;
+
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function inviter_block_view($delta = 'inviter') {
+      $block['title'] = 'Invite your friends';
+      $block['content'] = inviter_invite_content();
+  return $block;
+}
+
+function inviter_invite_content() {
+  global $user;
+  global $base_url;
+  $invite_link = $base_url . '/inviter/register/' . $user->uid;
+  $fb_invite_share = 'https://www.facebook.com/dialog/feed?
+  app_id=316002271856542&
+  link='. $invite_link . '&
+  picture='. $base_url .'/sites/all/themes/fusion/fusion_starter_lite/logo.png&
+  name=Join%20PasteOnMyCity&
+  caption=Search%20Share%20Connect&
+  description=Invition%20to%20join%20PasteOnMyCity.&
+  redirect_uri=' . $base_url;
+  $fb_invite_share_link = '<a class="btn btn-primary fb-share-button" href="'.$fb_invite_share.'" target="_blank"><i class="icon-twitter"></i>Share</a>';
+  $tw_invite_share = '<a class="btn btn-primary twitter-share-button" href="https://twitter.com/share?url='.$invite_link.'&via=PasteOnMyCity&text=Invition%20to%20join%20PasteOnMyCity.&hashtags=pomc" target="_blank"><i class="icon-twitter"></i> Tweet</a>';
+
+ ////// $tw_invite_share = '<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://dev.twitter.com/pages/tweet_button" data-via="your_screen_name" data-lang="en" data-related="anywhereTheJavascriptAPI" data-count="vertical">Tweet</a>';
+  return $fb_invite_share_link . '  ' . $tw_invite_share;
+}
+
+
+/*
+function inviter_share_facebook() {
+   global $user;
+   global $base_url; 
+   module_load_include('inc','facebook_rules','facebook_rules.rules');
+   $message =  'Join, Share, Collaborate and Win cash prizes on worlds first true social dicitionary';
+   $link = $base_url . '/inviter/register/' . $user->uid;
+   $name = 'Vocabguide.com';
+   $caption = 'Vocabulary Goes social #wordcup';
+   $description = 'Vocabguide is first social and collaborative dicitionary.';
+
+   $picture = 'http://vocabguide.com/sites/default/files/logomainpost.png';
+   facebook_rules_post_to_my_wall($message, $link, $name, $caption, $description, $picture); 
+   drupal_goto('user');
+
+}
+
+function inviter_share_facebook_team($tid) {
+   global $user;
+   global $base_url; 
+   $invite_link = $base_url . '/inviter/register/' . $user->uid . '/'. $tid;
+
+   $team = taxonomy_term_load($tid);
+   module_load_include('inc','facebook_rules','facebook_rules.rules');
+   $message =  'Join our team '. $team->name .' , Share, Collaborate and Win cash prizes on worlds first true social dicitionary';
+   $link = $invite_link;
+   $name = 'Vocabguide.com';
+   $caption = 'Vocabulary Goes social #wordcup';
+   $description = 'Vocabguide is first social and collaborative dicitionary.';
+
+   $picture = 'http://vocabguide.com/sites/default/files/logomainpost.png';
+   facebook_rules_post_to_my_wall($message, $link, $name, $caption, $description, $picture); 
+   drupal_goto('user');
+
+}
+*/	
