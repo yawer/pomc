@@ -88,7 +88,33 @@ function pomc_customizations_init() {
 }
 function pomc_customizations_form_alter(&$form, &$form_state, $form_id) {
 global $user;
-
+/*
+if((arg(0) == 'board') && ($user->uid == 0) && (!isset($_GET['city']))) {
+  if($_SESSION['smart_ip']['location']['city'] == 'Hyderabad') {
+    $city = '1';
+  }
+elseif($_SESSION['smart_ip']['location']['city'] == 'Mumbai') {
+    $city = '2';
+  }
+  elseif($_SESSION['smart_ip']['location']['city'] == 'Pune') {
+    $city = '3';
+  }
+  elseif($_SESSION['smart_ip']['location']['city'] == 'Delhi') {
+    $city = '4';
+  }
+  elseif($_SESSION['smart_ip']['location']['city'] == 'Bangalore') {
+    $city = '5';
+  }
+  elseif($_SESSION['smart_ip']['location']['city'] == 'Chennai') {
+    $city = '6';
+  }
+  elseif($_SESSION['smart_ip']['location']['city'] == 'Kolkata') {
+    $city = '7';
+  }
+  
+drupal_goto(htmlentities('board?city='.$city.'&category=All'));
+  
+}*/
 /*
 function pomc_customizations_user_insert($op, &$edit, &$account, $category = NULL) {
   switch ($op) {
@@ -104,43 +130,46 @@ function pomc_customizations_user_insert($op, &$edit, &$account, $category = NUL
   }
 }*/
 if($form['#id'] == 'views-exposed-form-dashboard-page-2') {
-if(isset($_GET['category'])) {
-$cat_id = $_GET['category'];
-$term = taxonomy_term_load($cat_id);
-$cat_name = $term->name;
-}
+  global $user;
+  $cat_name = 'Everything';
+  if(isset($_GET['category'])) {
+  $cat_id = $_GET['category'];
+  $term = taxonomy_term_load($cat_id);
+  if($term) {
+    $cat_name = $term->name;
+    }
+  }
 
-if(isset($_GET['city'])){
-$city_id =  $_GET['city'];
-$term_city = taxonomy_term_load($city_id);
-$city_name = $term_city->name;
-}
-
-$output = '';
+    if(isset($_GET['city'])){
+      $city_id =  $_GET['city'];
+      $term_city = taxonomy_term_load($city_id);
+      $city_name = $term_city->name;
+    }
+    else {
+      $city_name = taxonomy_term_load(user_load($user->uid)->field_city['und'][0]['tid'])->name;
+    }
+if($user->uid==0 && !isset($_GET['city'])){
+  $city_name = 'Hyderabad';
+  }
+  $output = '';
 /*Configuring themable output for city*/
 
-if(isset($city_name)) {
-$output .= '<div>City: </div><div id="city-label">'.$city_name.'</div>';
-}
-else {
-$output .= '<div>City: </div><div id="city-label">'.taxonomy_term_load(user_load($user->uid)->field_city['und'][0]['tid'])->name.'</div>';
-}
-
-$output .= '<ul id = "city-list-options">';
-foreach($form['city']['#options'] as $cid => $city) {
- if($city) {
-   $output .= '<li class="city-list" id="city city-'.$cid.'" value = "'.$cid.'">'.$city.'</li>'; 
+  if(isset($city_name)) {
+    $output .= '<div>City: </div><div id="city-label">'.$city_name.'</div>';
   }
-}
-$output .= '</ul>';
+
+  $output .= '<ul id = "city-list-options">';
+  foreach($form['city']['#options'] as $cid => $city) {
+    if($city) {
+      $output .= '<li class="city-list" id="city city-'.$cid.'" value = "'.$cid.'">'.$city.'</li>'; 
+    }
+  }
+  $output .= '</ul>';
 
 
 /* Configuring themable output for category list */
 if(isset($cat_name)) {
 $output .= '<div>Category: </div><div id="cat-label">'.$cat_name.'</div>';
-}
-else {
-$output .= '<div>Category: </div><div id="cat-label">Everything</div>';
 }
 $output .= '<ul id = "category-list-options">';
 
@@ -258,6 +287,10 @@ return $html_list;
   if(isset($view->style_plugin->rendered_fields[$view->row_index]['name_1'])) {
   $sharedBy = $view->style_plugin->rendered_fields[$view->row_index]['name_1'];
   }
+//  dpm(taxonomy_get_term_by_name($category));
+  $category_id = array_keys(taxonomy_get_term_by_name($category));
+  $city_id = array_keys(taxonomy_get_term_by_name($city));
+  $categorylink = l($category , "board/city=" . $city_id[0]."&category=".$category_id[0]);
   $description =  $view->style_plugin->rendered_fields[$view->row_index]['body'];
   $nid=$view->style_plugin->rendered_fields[$view->row_index]['nid'];
   $like = flag_get_flag('like');
@@ -266,7 +299,9 @@ return $html_list;
   $sharelink = flag_create_link('share', $nid);
   $print_form = drupal_get_form("comment_node_paste_form", (object) array('nid' => $nid));
   hide($print_form['author']);
- $output .= '<div class="column clearfix pull-left"><!--<div class="curl"></div>--><div class="top"></div><div class="mid"><h2 class="title"> '.$title.'</h2><div class="pull-left">by '.$author.'<!-- url = user-name/ --></div><div>' . $image . '</div><p class="desc">'.$description.'</p><div class="paste-bar clearfix"><div class="pull-left">'.$likelink.' <span id="lightframe"> &bull; </span>'.$sharelink.'</div></div><div class="category">in '. $category .'<!-- url = category-name/city-name/ --></div>
+  
+  
+ $output .= '<div class="column clearfix pull-left"><!--<div class="curl"></div>--><div class="top"></div><div class="mid"><h2 class="title"> '.$title.'</h2><div class="pull-left">by '.$author.'<!-- url = user-name/ --></div><div>' . $image . '</div><p class="desc">'.$description.'</p><div class="paste-bar clearfix"><div class="pull-left">'.$likelink.' <span id="lightframe"> &bull; </span>'.$sharelink.'</div></div><div class="category">in '. $categorylink .'<!-- url = category-name/city-name/ --></div>
 <div class="pull-right"><span> ' . $like->get_count($nid) . ' Likes </span><span> &bull; </span><span> '.$share->get_count($nid) .' Shares</span><span> &bull; </span><span class="info clearfix commentcount">' .$commentCount.' <b class="not-comment" ></b></span></div>'. drupal_render($print_form).'</div><div class="bot"></div></div>';
 return $output;
  
