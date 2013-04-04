@@ -41,6 +41,13 @@ function back_to_top_init() {
   if (variable_get('back_to_top_prevent_in_admin', 'TRUE') && (is_adminpage())) {
     return FALSE;
   }
+  $continuebacktotop = 0;
+  if(arg(0) == 'user' || arg(0) == 'board' || arg(0) == 'home' ) {
+  $continuebacktotop = 1;
+  }
+  if ($continuebacktotop == 0) {
+  return FALSE;
+  }
   drupal_add_library('system', 'effects');
   drupal_add_js(drupal_get_path('module', 'back_to_top') . '/js/back_to_top.js', array('group' => JS_DEFAULT, 'every_page' => TRUE));
   

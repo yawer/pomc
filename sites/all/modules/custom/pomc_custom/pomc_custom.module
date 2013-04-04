@@ -4,7 +4,7 @@ function pomc_custom_menu() {
   $items = array();
   
   $items['notifications'] = array(
-    'title' => t("Notifications"),
+    'title' => t("Your Notifications"),
     'page callback' => 'get_notifications_filter',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,

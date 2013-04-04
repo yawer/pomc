@@ -15,6 +15,8 @@ function pomc_preprocess_maintenance_page(&$vars) {
 }
 
 
+
+
 /**
  * HTML preprocessing
  */
@@ -213,8 +215,11 @@ function pomc_preprocess_page(&$vars) {
 
   // Remove breadcrumbs if disabled
   if (theme_get_setting('breadcrumb_display') == 0) {
-    $vars['breadcrumb'] = '';
-  }
+   $vars['breadcrumb'] = '';
+ }
+ if (arg(1) == 'register' && arg(0) == 'user') {
+   drupal_set_title('Sign up');
+ }
 }
 
 /**
@@ -565,7 +570,6 @@ function pomc_table(&$variables){
   $sticky = $variables['sticky'];
   $empty = $variables['empty'];
 if ($variables['attributes']['class'][0]=='privatemsg-list'){
-    dsm($variables);
     $output = '';
     foreach($variables['rows'] as $list_item){
 $output = $output . "<div id = 'msg-list-wrapper-outer'>
@@ -722,4 +726,5 @@ else{
   return $output;
 }
 }
+
 

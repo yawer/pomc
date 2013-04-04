@@ -1,18 +1,22 @@
 /* Global CSS*/
 
 body {
-background-color: #F1F1F1;
+background-color: #F2FBF5;
 margin: 0;
-font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+font-family: "Helvetica Neue",Arial,sans-serif;
 font-size: 14px;
 line-height: 20px;
 color: #333;
 
 }
+html { overflow-x: hidden; overflow-y: auto; }
 .wrapper
 {
 margin:auto;
 width:1000px;
+}
+#block-views--exp-dashboard-page_3 .gutter {
+margin-left: -50px;
 }
 ul, ol {
 padding: 0;
@@ -27,21 +31,21 @@ text-decoration: none;
 float:left;
 }
 .pull-right {
-    float:left;
-    font-size: 11px;
-    margin-bottom: 0px;
+    float:right;
+  
     /*opacity: 0.7; */
 }
-.pull-right span,.info a{
-color:#6F6A4A;
 
-}
 .not-comment{
 	display: inline-block;
     width: 22px;
     height: 15px;
     background: url("../img/comment.png") no-repeat;
 }
+#postscript-bottom-wrapper .grid12-12 {
+width: 980px;
+}
+
 #modalContent {
 
 top: 10%;
@@ -100,6 +104,27 @@ background-color:white;
 border:none;
 padding:0;
 margin:0;
+}
+
+.page-user-login .ctools-modal-ctools-ajax-register-style{
+color: white;
+text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+background-color: #006DCC;
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFFFFF !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+background-repeat: repeat-x;
+border-color: #F89406 #F89406 #AD6704;
+border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffbb450',endColorstr='#fff89406',GradientType=0);
+filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+border-radius: 6px 6px 6px 6px;
+    font-size: 17.5px;
+    padding: 11px 19px;
+}
+.page-user-login .ctools-modal-ctools-ajax-register-style:hover{
+text-decoration:none;
 }
 /*End Loginpage*/
  /*CSS of the home and board page grid*/
@@ -329,32 +354,48 @@ height: 42px;
     padding: 1px 16px;
 }
 
-.title{
+#pid-notifications .title, #pid-messages .title{
     margin-top: 0;
     margin-bottom: 5px;
     font-size: 16px;
     line-height: 1.1;
-    color: #6f6a4a;
 	text-align:left;
+	border-bottom: 1px solid #ddd;
+		padding-bottom: 10px;
+		margin-top: 25px;
 }
-
+.content {
+}
 #content-region-inner h1{
 	/*display:none;*/
 }
 .category{
-    margin-bottom: 5px;
-    color: #ababaa;
-	text-align:left;
+margin-bottom: 5px;
+color: black;
+text-align: right;
+font-weight: Bold;
+float: right;
+padding-right: 15px;
+padding-top: 9px;
+}
+
+.category a {
+color: black;
 }
 /*.mid a{
     color: #6F6A4A;
 }*/
 .title a{
-	color: #6F6A4A;
+	color: #6F6A4A;uid
+}
+
+.author-name-paste {
+width: 100%;
+text-align: left;
 }
 
 .paste-bar{
-    background-color: #f5f0b5;
+    background-color: #F1F1F1;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -494,7 +535,7 @@ color: rgba(0, 0, 0, 0.5 );
 }
 .flag,
 .username{
-	color:#D69700;
+	color:#000;
 }
 /* end profile page css */
 
@@ -554,11 +595,11 @@ To keep taxonomy filter in the middle
 	text-decoration:none;
 }
 
-.follow .flag-follow-users{
+.follow .flag-follow-users, .follow .flag-follow-categories{
 	margin-left:-20px;
 }
 
-.follow .flag-follow-users .flag-action{
+.follow .flag-follow-users .flag-action, .follow .flag-follow-categories .flag-action  {
 	background-color: #5BB75B;
     background-image: linear-gradient(to bottom, #62C462, #51A351);
     background-repeat: repeat-x;
@@ -584,7 +625,7 @@ To keep taxonomy filter in the middle
 	vertical-align: middle;
 }
 
-.follow .flag-follow-users .flag-action:hover{
+.follow .flag-follow-users .flag-action:hover, .follow .flag-follow-categories .flag-action:hover{
 	background-color:#51A351;
 	color:#fff;
 	text-decoration:none;
@@ -596,7 +637,7 @@ To keep taxonomy filter in the middle
 	
 }
 
-.follow .flag-follow-users .unflag-action{
+.follow .flag-follow-users .unflag-action, .follow .flag-follow-categories .unflag-action{
 	background-color: #DA4F49;
     background-image: linear-gradient(to bottom, #EE5F5B, #BD362F);
     background-repeat: repeat-x;
@@ -642,13 +683,12 @@ To keep taxonomy filter in the middle
 	color:#333333;
 }
 
-.user-stats .edit-profile,#edit-actions .form-submit{
+.user-stats .edit-profile, #next_first-split-form, #paste-node-form .form-actions #edit-cancel, #paste-node-form .form-actions #edit-submit, #pid-user-register #edit-submit, .previous_button{
   `	-moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
     background-color: #F5F5F5;
-    background-image: linear-gradient(to bottom, #FFFFFF, #E6E6E6);
     background-repeat: repeat-x;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) #A2A2A2;
     border-image: none;
@@ -672,11 +712,12 @@ To keep taxonomy filter in the middle
 .user-stats .edit-profile,.follow .flag-follow-users{
 	margin-top:20px;
 }
-.user-stats .edit-profile:hover,#edit-actions .form-submit:hover{
+.user-stats .edit-profile:hover,#edit-actions .form-submit:hover, #next_first-split-form:hover, .previous_button:hover{
 	background-color:#E6E6E6;
-	background-position:0 -15px;
+	background-position:0 0px;
 	transition:background-position .1s linear 0s;
 }
+.button-disabled:hover{background-color: #F5F5F5!important; background-position:0 0px!important;transition:background-position 0s linear 0s!important;cursor: no-drop;}
 .stat-no {
     font-weight: bold;
 }
@@ -706,6 +747,7 @@ To keep taxonomy filter in the middle
     margin-top: 10px;
     text-align: center;
     width: 170px;
+    border-radius: 3px
 }
 .user-col .user-name{
 	color: #6F6A4A;
@@ -721,7 +763,7 @@ To keep taxonomy filter in the middle
 	border: 0 none;
     height: auto;
     max-width: 100%;
-    vertical-align: middle;
+    vertical-align: middle;pid-messages
 }
 .paste-col{
     -moz-box-sizing: border-box;
@@ -747,7 +789,6 @@ To keep taxonomy filter in the middle
     margin-top: 10px;
 }
 .paste-container .paste-bar .pull-left a, .info a{
-	color: #0088CC;
 	text-decoration:none;
 }
 .date {
@@ -937,14 +978,18 @@ background-color: white;
 padding: 0px;
 }
 .view-id-dashboard .form-type-textarea label {display:none!important;}
+.paste-container { float:left;}
 .paste-container .username{ color:#6F6A4A;text-decoration: none;}
-.paste-container .follow{padding: 20px 0 20px 20px;}
+.paste-container .follow{padding: 9px 0 20px 21px;}
 .comment-on-paste .form-textarea-wrapper textarea{padding: 5px;height: 55px; width: 465px;background-color: #FFFFFF;border: 1px solid #CCCCCC;border-radius: 5px 5px 5px 5px;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;display: inline !important; transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;}
 /*#content #edit-actions{display:none;} */
 .view-id-user_interests .views-row{float:left; margin-left: 10px;}
 /*Overlay fixing closed!*/
 /* main menu***********/
-#header-top-inner #block-block-1{float: right;width: 33%;}
+#header-top-inner #block-block-1{ height: 100px; float: right;position: absolute;}
+#block-block-1 .clearfix:after,#block-block-1 .clearfix .inner:after{
+  display:inline;
+}
 #block-views--exp-dashboard-page_3{width:33%;}
 #header-top-inner #block-block-1 ul li {display: inline;font-size: 12px;line-height: 132%; padding: 5px;}
 #header-top-inner #block-block-1 .dropdown-menu{
@@ -962,6 +1007,12 @@ padding: 0px;
     
    
 }
+
+#block-block-2{
+z-index: 120;
+position: relative;
+}
+
 #header-top-inner #block-block-1 .dropdown-menu li a{ color: black!important;}
 #header-top-inner #block-block-1 ul li a{
     color: #FFFFFF;
@@ -1005,7 +1056,7 @@ padding: 0px;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
-    background-color: #F5F5F5;
+    background-color: #F2FBF5;
     background-image: linear-gradient(to bottom, #FFFFFF, #E6E6E6);
     background-repeat: repeat-x;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) #A2A2A2;
@@ -1045,6 +1096,7 @@ padding: 0px;
 
 }
 #header-top-inner #block-block-1 .dropdown-menu{
+position: relative;
     z-index: 100000;
     opacity: 0;
     -webkit-transition: all 300ms ease-in-out;
@@ -1052,6 +1104,9 @@ padding: 0px;
     -ms-transition: all 300ms ease-in-out;
     -o-transition: all 300ms ease-in-out;
     transition: all 300ms ease-in-out;
+     position: relative;
+    right: 150px;
+    top: 20px;
 }
 .privatemsg-author-avatar img, .privatemsg-list-subject img{
     width:50px;
@@ -1077,7 +1132,7 @@ div.privatemsg-message-information {
 div.privatemsg-message ul.privatemsg-message-actions {float: right;padding: 0;}
 .page-messages-view #content{background: none repeat scroll 0 0 #FFFFFF;}
 .page-messages-view .privatemsg-message{
-    background-color: #FAFAFA;
+    background-color:  #F2FBF5;
     border: 1px solid #DDDDDD;
     margin-bottom: 10px;
     padding: 10px;
@@ -1099,6 +1154,168 @@ div.privatemsg-message ul.privatemsg-message-actions {float: right;padding: 0;}
 #author-image .privatemsg-list-message-link, .view-id-dashboard .grippie, .view-id-dashboard .form-actions{display:none}
 .user-profile .user-desc {padding-top: 10px;}
 #header-top { width: auto;}
-#block-block-2{width:34%;}
+#block-block-2{width:37%;}
 #header-top-inner{margin: 0 auto;width: 1100px;}
 #block-block-2 p{margin: -3px 0 0; text-align: center;}
+
+
+/*pritam's newly added css*/
+.pasteimage img{border: 2px solid #F1F1F1;}
+
+#user-register-form label{
+	display:inline !important;
+}
+#user-register-form{
+ 	margin: 0 0 0 135px;
+        width: 70%;
+}
+#user-register-form input, #user-register-form select {
+border-radius: 3px !important;
+}
+
+#user-register-form #edit-pass-pass1{  margin: 0 0 0 126px;}
+
+
+
+#user-register-form div.password-confirm {
+    float: none !important;
+    
+}
+#user-register-form #edit-name{
+    margin: 0 0 0 124px;
+    width: 68%;
+ border: 1px solid #C1C1C1;
+    border-radius: 0 0 0 0;
+}
+#user-register-form #edit-mail{
+   
+    margin: 0 0 0 7em;
+    width: 68%;
+}
+#user-register-form #edit-mail, #user-register-form #edit-name, #user-register-form #edit-pass-pass1, #user-register-form #edit-pass-pass2, #user-register-form #edit-field-full-name-und-0-value{
+	 border: 1px solid #C1C1C1;
+   	 border-radius: 0 0 0 0;
+	height: 26px;
+}
+#user-register-form .form-type-password{width: 52em;!important}
+
+#user-register-form .password-strength {
+    width: 15em !important;
+    margin-top:0 !important; 
+    
+}
+#user-register-form #edit-pass-pass2{
+	margin: 0 0 0 74px;
+}
+#user-register-form .username form-text required{
+	width:62%;margin-top: 25px;
+}
+#user-register-form #edit-field-full-name-und-0-value{
+	width:68%;
+	margin: 0 0 0 134px;
+}
+#user-register-form #edit-field-city-und{
+	width:36%;
+	margin: 0 0 0 165px;
+        height: 32px
+}
+#user-register-form .form-item .description {
+    font-size: 0.85em !important;
+    left: 209px;
+    position: relative;
+    width: 71%;
+	z-index:-1000;
+}
+#user-register-form div.form-item div.password-suggestions{
+	border:none;
+}
+#user-register-form #edit-field-gender-und .option{
+	float:none;
+}
+#user-register-form .form-item-field-purpose-und label{
+	
+}
+#user-register-form #edit-field-purpose .form-item-field-purpose-und #edit-field-purpose-und{
+	width:68%;margin: -22px 0 0 178px;
+}
+#user-register-form .form-checkboxes .form-item, .form-radios .form-item{margin-left:24px;}
+#user-register-form .form-item-field-profile-pic-und-0{width:100%}
+#user-register-form .form-item-field-profile-pic-und-0 label{width:31%; float:left}
+#user-register-form #edit-field-profile-pic-und-0-upload{float: left;position: relative;width: 69%;z-index: 100;}
+#user-register-form .imagefield-crop-widget{float: left;}
+#user-register-form .form-item-field-profile-pic-und-0 .file{display:none}
+#user-register-form #form-wrapper, .form-type-radios{width:100%}
+#user-register-form .field-name-field-gender #edit-field-gender-und{width:68%;margin: 0 0 0 186px;}
+#user-register-form .form-item-field-gender-und label,.form-item-field-description-und-0-value label, .form-type-hierarchical-select label{
+    display: inline !important;
+    float: left;
+    width: 30%;
+}
+#user-register-form .form-item-field-description-und-0-value .form-textarea-wrapper{width:70%;display: inline;
+float: left;}
+#user-register-form .field-name-field-description { margin-bottom: 80px}
+#user-register-form .form-item-field-description-und-0-value .grippie{display:none}
+#user-register-form  #field-dateofbirth-add-more-wrapper{margin: 0 0 0 209px;width: 69%;}
+#user-register-form #field-dateofbirth-add-more-wrapper{ margin: 0 0 0 208px;width: 69%;}
+#user-register-form .form-item-field-dateofbirth-und-0-value-day .date-day{width: 95px;}
+#edit-legal{}
+#user-register-form input.form-autocomplete {background-position: 100% 4px!important;}
+#user-register-form .form-item-field-city-und #autocomplete{margin: 0 0 0 170px;}
+select {background-color: white!important;}
+.form-item input.error, .form-item textarea.error, .form-item select.error {border: 2px solid red !important;}
+#user-register-form #next_first-split-form{float:right}
+#user-register-form .button-disabled{opacity: 0.3;}
+
+#webform-client-form-490 .form-actions {
+    background-color: #fff;
+    border-top: none;
+    margin: 0px 0px 0px 0px;
+    padding: 0px  0px 0px 0px;
+    }
+    
+#webform-client-form-490 .grippie {
+
+display:none;
+} 
+
+.page-user-login .ctools-modal-content {
+width: 435px !important;
+}
+
+
+.page-user-login #modalContent {
+left: 33% !important;
+width: 435px;
+}
+
+#webform-client-form-490 textarea{
+width: 400px;
+}
+
+#webform-client-form-490 #edit-submitted-email {
+margin-left: 3px;
+}
+
+#user-pass input#edit-name {
+height: 23px;
+width: 500px;
+}
+#webform-client-form-490 #edit-submit{
+ background-color: #5BB75B;
+    background-image: linear-gradient(to bottom, #62C462, #51A351);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+     border-radius: 4px 4px 4px 4px;
+    font-size: 15.5px;
+    padding: 5px 12px;
+    }
+    
+    .login-but{
+    margin-right: 270px;
+    }
+    
+    .paste-bar a, a.nologin-comment {
+    color:black;
+    }

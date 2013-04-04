@@ -356,6 +356,7 @@ function inviter_invite_content() {
   global $user;
   global $base_url;
   $invite_link = $base_url . '/inviter/register/' . $user->uid;
+  $invite_link = "http://www.beta.pasteonmycity.com";
   $fb_invite_share = 'https://www.facebook.com/dialog/feed?
   app_id=316002271856542&
   link='. $invite_link . '&
@@ -366,6 +367,8 @@ function inviter_invite_content() {
   redirect_uri=' . $base_url;
   $fb_invite_share_link = '<a class="btn btn-primary fb-share-button" href="'.$fb_invite_share.'" target="_blank"><i class="icon-twitter"></i>Share</a>';
   $tw_invite_share = '<a class="btn btn-primary twitter-share-button" href="https://twitter.com/share?url='.$invite_link.'&via=PasteOnMyCity&text=Invition%20to%20join%20PasteOnMyCity.&hashtags=pomc" target="_blank"><i class="icon-twitter"></i> Tweet</a>';
+  
+    $tw_invite_share = '<a class="btn btn-primary twitter-share-button" href="http://twitter.com/share?url='.$invite_link.'&text= Here is an invitation to join PasteOnMyCity!&via=PasteOn" target="_blank"><i class="icon-twitter"></i>Tweet</a> ';
 
  ////// $tw_invite_share = '<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://dev.twitter.com/pages/tweet_button" data-via="your_screen_name" data-lang="en" data-related="anywhereTheJavascriptAPI" data-count="vertical">Tweet</a>';
   return $fb_invite_share_link . '  ' . $tw_invite_share;

@@ -73,9 +73,15 @@ color: #111;
 }
 
 .notification-container {
-background-color:white;
-width: 800px;
+background-color:#C1D6A4;
 min-height: 500px;
+border-radius: 5px;
+margin-top: 30px;
+margin-left: 0px !important;
+}
+#block-inviter-inviter .content{
+margin-top: 10px;
+
 }
 
 ul {
@@ -90,7 +96,6 @@ li.leaf, li.collapsed, li.expanded {
   list-style-type: none;
 }
 li.notification-item {
-width: 800px;
 height: 50px;
 padding: 10px;
 border-bottom:1px solid #F2F2F2;
@@ -180,11 +185,10 @@ padding: 9px 15px;
 font-size:31.5px;
 }
 .page-node-add-paste #overlay-close-wrapper {
-.position: absolute;
 float: right;
 position: relative;
 left: 16px;
-bottom: 68px;
+bottom: 70px;
 }
 
 .page-node-add-paste #page-inner {
@@ -221,10 +225,10 @@ font-size: 14px;
 font-weight: normal;
 line-height: 20px;
 }
-#paste-node-form .form-item {
-margin-bottom: 20px;
-}
 
+#paste-node-form #edit-field-paste-image .form-item-field-paste-image-und-0 {
+
+}
 #paste-node-form input#edit-title{
 width: 270px;
 margin-left: 15px;
@@ -232,7 +236,7 @@ border: 1px solid #CCCCCC;border-radius: 5px 5px 5px 5px;
 height: 25px;}
 
 #paste-node-form input#edit-field-paste-image-und-0-upload{
-width: 270;
+width: 170px;
 margin-left: 15px;
 }
 
@@ -251,7 +255,7 @@ display:inline;
 margin-left: 15px;
 }
 
- #paste-node-form .grippie {
+ .grippie {
  display:none;
  
  }
@@ -263,9 +267,7 @@ position: relative;
 overflow-y: auto;
 border-bottom: 3px solid white;border-radius: 10px 10px 10px 10px;
 }
-#paste-node-form {
-margin: 0 0 20px;
-}
+
 input:focus, textarea:focus {
 border-color: rgba(82, 168, 236, 0.8);
 outline: 0;
@@ -279,6 +281,10 @@ box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(82, 168, 236, 0.6)
 margin-bottom: 20px;
 border-bottom: 1px solid #CCCCCC;
 }
+.page-node-add-paste  #edit-field-city-und {
+width: 150px;
+}
+
 select {
 width: 150px;
 padding: 3px 4px;
@@ -301,18 +307,305 @@ background-color: white;
 
 .page-node-add-paste .form-actions{
 margin-left: 160px;
+margin-bottom:0px;
 }
 .page-node-add-paste .form-actions #edit-cancel{
 margin-left: 15px;
 }
 .page-node-add-paste .form-actions #edit-submit{
-background-color: #5BB75B;
+background-color: #5BB75B !important;
 color:white;
 font-size: 14px;
 }
 .page-node-add-paste .form-actions #edit-submit:hover {
 background-color: #51A351
 }
-.flag-waiting .flag-throbber {
+.flag-waiting .flag-throbber {margin-top: 342px;
 background: url("../img/flag-throbber.gif") no-repeat scroll 50% 50% !important;
 }
+.cat-col {
+margin-top: 340px;
+}
+ .user-col .node-category-name{
+	color: #6F6A4A;
+    font-size: 16px;
+    line-height: 1.1;
+    padding-top: 10px;
+    text-align: center;
+}
+
+/*Category filter CSS by Madhukunj*/
+
+#comment-form--2 .grippie{
+	display:none;
+}
+.user-name{
+	margin-top:10px;
+}
+.single-stat a:hover{
+	color: #005580;
+    text-decoration: none;	
+}
+#service-city-label,#cat-category-list{
+	float:left;
+	color: rgba(0, 0, 0, 0.5);
+    padding: 2px 3px;
+}
+
+#cat-label,#service-city-label{
+	background-color: #F0F0F0;
+    border-radius: 0 0 0 0;
+    height: 24px;
+    padding: 0px 5px;
+    width: 150px;
+	border:1px solid #cccccc;
+	line-height:23px;
+}
+#city-list-options .city-list,#service-city-label,#category-list-options,#cat-label{
+	cursor:pointer;
+}
+#city-list-options .city-list
+{
+	border-radius: 0 0 0 0;
+    padding: 3px 4px;
+    width: 152px;
+	line-height:20px;
+	background:#ffffff;
+	font-size:14px;
+}
+#cat-category-list .primary-list
+{
+	border-radius: 0 0 0 0;
+    padding: 3px 5px;
+    width: 152px;
+	line-height:20px;
+	background:#ffffff;
+	font-size:14px;
+	border-bottom:1px solid #CCD8D6;
+	border-left:1px solid #CCD8D6;
+}
+#category-list-options .children-wrapper .primary-list:hover{
+	border-top:1px solid #333333;
+	border-bottom:1px solid #333333;
+	z-index:999;
+	position:relative;
+	width:150px;
+	background:#cccccc;
+	text-decoration:underline;
+}
+#category-list-options .children-wrapper .have-children li:first-child{
+	padding:3px 2px;
+	border-top:1px solid #cccccc;
+}
+#category-list-options .children-wrapper .have-children li:last-child{
+	padding:3px 2px;
+}
+#category-list-options .children-wrapper .primary-list{
+	border-top:none;
+	border-bottom:1px solid #cccccc;
+}
+.have-children li
+{
+	position:relative;
+	background: none repeat scroll 0 0 #FFFFFF;
+	width:100px;
+	left:132px;
+	/*overflow: hidden;*/
+	padding:0 0 0 5px;
+	border-left:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+}
+ul .have-children:hover{
+	background:#cccccc;
+	text-decoration:underline;
+}
+#cat-arrow{
+	position: absolute;
+    right: 2px;
+    margin-top: -25px;
+	font-weight:bold;
+}
+#cat-arrow:hover{
+}
+#secondary-category-list .have-children{
+	/*overflow:hidden;*/
+}
+ul .have-children{
+	float: left;
+    position: absolute;
+	margin-top:-28px;
+	width:0px;
+padding-left:4px;
+}
+
+#city-arrow
+{
+	margin-left: -15px;
+    position: absolute;
+	-webkit-position:relative;
+    z-index: 9999;
+}
+#city-list-options{
+	color: #555555;
+    font-size: 14px;
+	padding:28px 0px 0px 0px;
+margin-left: 0px;
+}
+#service-city-label,#cat-category-list
+{
+    z-index: 101;
+	position:relative;
+	float: left;
+}
+#city-list-options .city-list
+{	
+	z-index: 1000;
+	position:relative;
+	border-left:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+	border-bottom:1px solid #cccccc;
+}
+#city-list-options .city-list:hover{
+	background-color:#cccccc;
+	text-decoration:underline;
+}
+#category-list-options{
+	border-right:1px solid #cccccc;
+	padding: 28px 0px 0px 0px;
+color: #555;
+font-size: 14px;
+margin-left: 0px;
+}
+#city-list-options li:first-child,#category-list-options li:first-child{
+	border-top:2px solid #cccccc;
+}
+#city-list-options li:last-child,#category-list-options li:last-child{
+	border-bottom:1px solid #cccccc;
+}
+#category-list-options .list-arrow{
+	float:right;
+	font-weight:bold;
+	padding-top:0px;
+}
+
+div.content-messages-inner div.error{
+	display:none;
+}
+#block-views--exp-dashboard-page_2
+{
+	width:auto;
+	height:30px;
+}
+ul {
+	list-style-image: none;
+	list-style: none;
+	list-style-type: none;
+	opacity:0px;
+}
+li.leaf, li.collapsed, li.expanded {
+	list-style-image: none;
+	list-style: none;
+	list-style-type: none;
+}
+
+#service-city-list{
+	float:left;
+}
+#cat-category{
+	float: left;
+}
+#cat-label{
+	float:left;
+
+}
+
+#cat-category-list,#service-city-list{
+	padding: 6px 0 0 22px;
+}
+
+.paste-stats {
+    font-size: 11px;
+    margin-bottom: 0px;
+    width: 100%;
+    text-align: left;
+    /*opacity: 0.7; */
+}
+.paste-stats span,.info a{
+color:#6F6A4A;
+
+}
+
+#user-register-form #edit-actions {
+float:right;
+}
+
+.node-type-paste .grippie,.node-type-paste #edit-submit {
+display:none;
+}
+
+#pid-messages .action-links li a{
+background-color: #f1f1f1;
+background-repeat: repeat-x;
+border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+color: #000;
+-moz-border-bottom-colors: none;
+-moz-border-left-colors: none;
+-moz-border-right-colors: none;
+-moz-border-top-colors: none;
+border-image: none;
+border-radius: 4px 4px 4px 4px;
+border-style: solid;
+border-width: 1px;
+box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+cursor: pointer;
+display: inline-block;
+font-size: 14px;
+line-height: 20px;
+margin-bottom: 0;
+padding: 4px 12px;
+text-align: center;
+vertical-align: middle;
+}
+#pid-messages .action-links{
+  margin:10px 0 15px 12px
+}
+
+.node-type-paste .form-item-comment-body-und-0-value label {
+    display:none;
+    }
+    
+  .node-type-paste .first-one-text  {
+    color: black;
+margin-bottom: 7px;
+}
+
+
+ 
+ 
+ #block-inviter-inviter .gutter .content a.fb-share-button{
+       background:url("../img/FB_button_share.png")no-repeat;
+       width:200px;
+       height:42px;        
+       float:left;
+       text-indent:-99999px;
+}
+#block-inviter-inviter .gutter .content a.twitter-share-button{
+       background:url("../img/Twitter_buttons_share.png")no-repeat;
+       width:200px;
+       height:42px;        
+       float:left;
+       margin-top:5px;
+       text-indent:-99999px;        
+}
+#user-login #edit-actions, #user-login #edit-actions--2{
+width: 100px;
+float:left;
+}
+.forgot-password-link {
+float:left;
+ padding-top: 12px;
+  color: #0088CC;
+}
+#edit-submit--2 {
+	background-position:0 0px !important;
+	}

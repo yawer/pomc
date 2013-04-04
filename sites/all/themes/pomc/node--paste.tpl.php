@@ -76,21 +76,36 @@
  * @see template_process()
  */
 //dsm($content['comments']['comment_form']);
+global $user;
 ?>
 <div class="row clearfix" id="test">
 
                 <div class="paste-container">
 
                     <div class="user-col pull-left">
-                        <h2 class="user-name"> <?php  print $name; ?></h2>
+                       <div class="top-elements-paste"> <h2 class="user-name"> <?php  print $name; ?></h2>
                         <div class="user-pic"><?php print $user_picture; ?></div>
                         <?php 
                         ?>
                         <div class="follow"><?php
- print flag_create_link("follow_users", $uid); ?></div>
-                    </div>
+ print flag_create_link("follow_users", $uid);
 
-                    <div class="paste-col clearfix pull-left">
+?> </div></div>
+
+
+                    </div>
+                    <div class="user-col cat-col"><h2 class="node-category-name">
+<?php $parent = taxonomy_get_parents($node->field_category['und'][0]['tid']); if ($parent) {
+$parent_tid = array_keys($parent);
+$parent_name = $parent[$parent_tid[0]]->name;
+print $parent_name.' - '; } print $node->field_category['und'][0]['taxonomy_term']->name;
+ ?>
+</h2>
+<div class = "node-catergory-follow">
+<div class="follow">
+<?php print flag_create_link("follow_categories", $node->field_category['und'][0]['tid']); ?></div> 
+</div></div></div>
+                           <div class="paste-col clearfix pull-left">
                         <!--<div class="curl"></div>-->
                         <h1 class="paste-title"><?php print $title; ?></h1>
                         <div class="info clearfix">
@@ -121,19 +136,44 @@
 
                         <h3 class="sub-paste-title">Say something</h3>
                         <div class="comment-author comment-on-paste clearfix">
-                            <?php hide($content['comments']['comment_form']['author']);
-				  print $user_picture;
-                                  print render($content['comments']['comment_form']); ?>
+                            <?php hide($content['comments']['comment_form']['author']); if($user->uid) {
+				  print theme('user_picture', array('account' => user_load($user->uid)));
+				 
+                                  print render($content['comments']['comment_form']);
+                                  } else {
+                                  print l("Login or Register to comment", "user/login");
+                                  } ?>
                         </div>
          		
-			 <h3 class="sub-paste-title"><?php print get_share_count($node->nid); ?> Shares</h3>
+			 <h3 class="sub-paste-title"><?php $sharecount = get_share_count($node->nid); print $sharecount; ?> Shares</h3>
 			<?php $block_share = module_invoke('views', 'block_view', 'user_interests-block_2');
-				print render($block_share['content']); ?> 
-			<h3 class="sub-paste-title"><?php print get_like_count($node->nid); ?> Likes</h3>
+			if($user->uid) { if($sharecount == 0) {
+			print '<div class="first-one-text">Be the first one to share!</div>';
+				}
+				else {print render($block_share['content']); }
+				
+				} else {
+				print l("Login or Register to share with PasteOnMyCity community", "user/login");
+				}
+				?> 
+			<h3 class="sub-paste-title"><?php $likecount = get_like_count($node->nid); print $likecount; ?> Likes</h3>
 			<?php $block_like = module_invoke('views', 'block_view', 'user_interests-block_1');
-				print render($block_like['content']);?>
-			<h3 class="sub-paste-title"><?php print $comment_count; ?> Comments</h3>
-                        <?php print render($content['comments']); ?>
+				if($user->uid) { if($likecount == 0) {
+				print '<div class="first-one-text">Be the first one to like!</div>';
+				} else {
+				print render($block_like['content']);}
+				}
+				else {
+				print l("Login or Register to like this paste", "user/login");
+				}?>
+			<h3 class="sub-paste-title"><?php $comment_count; ?> Comments</h3>
+                        <?php if($user->uid) { if($comment_count == 0) {
+                        print '<div class="first-one-text">Be the first one to comment!</div>';
+                        } else { print render($content['comments']);}
+                        } else {
+                        	print l("Login or Register to comment", "user/login");
+                        }
+                         ?>
                         </div>
                     </div>
                 </div>
