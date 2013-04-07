@@ -26,7 +26,27 @@ margin: 0 0 10px 25px;
 a {
 text-decoration: none;
 }
-
+ #edit-actions input.form-submit {
+ background-color: #F1F1F1;
+ -moz-border-bottom-colors: none;
+-moz-border-left-colors: none;
+-moz-border-right-colors: none;
+-moz-border-top-colors: none;
+border-image: none;
+border-radius: 4px 4px 4px 4px;
+border-style: solid;
+border-width: 1px;
+box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+cursor: pointer;
+display: inline-block;
+font-size: 14px;
+line-height: 20px;
+margin-bottom: 0;
+margin-right: 8px;
+padding: 4px 12px;
+text-align: center;
+vertical-align: middle;
+}
 .pull-left {
 float:left;
 }
@@ -35,6 +55,7 @@ float:left;
   
     /*opacity: 0.7; */
 }
+
 
 .not-comment{
 	display: inline-block;
@@ -123,6 +144,7 @@ border-radius: 6px 6px 6px 6px;
     font-size: 17.5px;
     padding: 11px 19px;
 }
+
 .page-user-login .ctools-modal-ctools-ajax-register-style:hover{
 text-decoration:none;
 }
@@ -990,7 +1012,7 @@ padding: 0px;
 #block-block-1 .clearfix:after,#block-block-1 .clearfix .inner:after{
   display:inline;
 }
-#block-views--exp-dashboard-page_3{width:33%;}
+#block-views--exp-dashboard-page_3{width:33%;z-index: 200;}
 #header-top-inner #block-block-1 ul li {display: inline;font-size: 12px;line-height: 132%; padding: 5px;}
 #header-top-inner #block-block-1 .dropdown-menu{
     border-radius: 6px 6px 6px 6px;
@@ -1319,3 +1341,19 @@ width: 500px;
     .paste-bar a, a.nologin-comment {
     color:black;
     }
+    
+  #user-register-form .container-inline-date{
+    margin-top: -16px;
+margin-left: -24px;
+clear:none;
+    }
+    
+    #user-register-form fieldset.date-processed {
+border:none;
+     }
+    
+     #user-register-form fieldset.date-processed legend {
+     float: left;
+margin-left: -220px;
+font-weight: bold;
+     }

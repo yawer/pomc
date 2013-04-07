@@ -1,7 +1,14 @@
 (function ($) {
   Drupal.behaviors.pomc = {
     attach: function (context, settings) {
-
+    
+ $("#paste-node-form #edit-cancel").click(function(event){
+parent.Drupal.overlay.close();
+          
+    });
+ $("#webform-client-form-490 #edit-submit").click(function(event){
+          
+    });
 $(".form-textarea-wrapper").bind("keyup", function(e){ 
 
   if (e.keyCode == 13 && e.shiftKey) {
@@ -42,12 +49,10 @@ $(".form-textarea-wrapper").bind("keyup", function(e){
 		$("#category-list-options ul.category-child-list-"+this.value).hide();
       });
       
-    jQuery("#category-list-options #secondary-category-list").mouseenter(function(e){
+    jQuery("#category-list-options  .children-wrapper #secondary-category-list").mouseenter(function(e){
 //      event.preventDefault();
-alert('test');
          $("#category-list-options .primary-list").show();
-         alert($(this).attr("class"));
-         $("ul."+$(this).attr("class")).show();
+        $("ul."+$(this).attr("class")).show();
       });
        jQuery("#category-list-options #secondary-category-list").mouseleave(function(e){
 
@@ -58,6 +63,9 @@ alert('test');
     jQuery("#category-list-options li.primary-list").live("click", function(e){
      
       val = this.value;
+      if(val ==0) {
+      val = 'All';
+      }
       $("option[value=" + val + "]").attr("selected", true);
       $("#views-exposed-form-dashboard-page-2").submit();
       });
@@ -98,23 +106,23 @@ $('.form-item-legal-accept input').live("click", function(){
     }
 });
 
-$('#pid-user-register .previous_button, #pid-user-register .last_previous,#pid-user-register #edit-field-dateofbirth, #pid-user-register #edit-field-gender, #pid-user-register #edit-field-description, #pid-user-register .next_previous, #pid-user-register #edit-actions, #pid-user-register #edit-field-category, #pid-user-register #edit-legal, #pid-user-register #edit-field-profile-pic').hide();
+$('#pid-user-register .previous_button, #pid-user-register .last_previous,#pid-user-register #edit-field-dateofbirth, #pid-user-register #edit-field-gender, #pid-user-register #edit-field-description, #pid-user-register .next_previous, #pid-user-register #edit-actions, #pid-user-register #edit-legal').hide();
 	$('#pid-user-register #next_first-split-form').click(function(){
-	  $('#pid-user-register #edit-account, #pid-user-register #next_first-split-form, #pid-user-register #edit-field-full-name, #pid-user-register #edit-field-purpose,  #pid-user-register #edit-field-city').hide();
-	  $('#pid-user-register #edit-field-dateofbirth, #pid-user-register #edit-field-gender, #pid-user-register #edit-field-description, #pid-user-register .next_previous, #pid-user-register #edit-field-category, #pid-user-register .previous_button, #pid-user-register #edit-actions, #pid-user-register #edit-legal, #pid-user-register #edit-field-profile-pic').show();
+	  $('#pid-user-register #edit-account, #pid-user-register #next_first-split-form, #pid-user-register #edit-field-full-name, #pid-user-register #edit-field-purpose,  #pid-user-register #edit-field-city,  #pid-user-register #edit-field-profile-pic').hide();
+	  $('#pid-user-register #edit-field-dateofbirth, #pid-user-register #edit-field-gender, #pid-user-register #edit-field-description, #pid-user-register .next_previous, #pid-user-register .previous_button, #pid-user-register #edit-actions, #pid-user-register #edit-legal').show();
 	});
 	// Second step
 	//click action on previous
 	$('#pid-user-register .previous_button').click(function(){
-	  $('#pid-user-register #edit-account, #pid-user-register #edit-field-city, #pid-user-register #next_first-split-form, #pid-user-register #edit-field-full-name, #pid-user-register #edit-field-purpose').show();
-	  $('#pid-user-register #edit-legal, #pid-user-register #edit-field-dateofbirth, #pid-user-register #edit-field-gender, #pid-user-register #edit-field-description, #pid-user-register .next_previous, #pid-user-register #edit-field-category, #pid-user-register .previous_button, #pid-user-register #edit-actions, #pid-user-register #edit-field-profile-pic').hide();
+	  $('#pid-user-register #edit-account, #pid-user-register #edit-field-city, #pid-user-register #next_first-split-form, #pid-user-register #edit-field-full-name, #pid-user-register #edit-field-purpose,  #pid-user-register #edit-field-profile-pic').show();
+	  $('#pid-user-register #edit-legal, #pid-user-register #edit-field-dateofbirth, #pid-user-register #edit-field-gender, #pid-user-register #edit-field-description, #pid-user-register .next_previous, #pid-user-register .previous_button, #pid-user-register #edit-actions, #pid-user-register #edit-field-profile-pic').hide();
 	});
 
-  var classname = jQuery('#edit-field-category-und-hierarchical-select-selects-1').attr('class');
+  /*var classname = jQuery('#edit-field-profile-pic-und-0-upload').attr('class');
   if(classname == 'form-select'){
 	$('#pid-user-register .previous_button, #pid-user-register .last_previous, #pid-user-register #edit-field-city, #pid-user-register #edit-field-dateofbirth, #pid-user-register #edit-field-gender, #pid-user-register #edit-field-description, #pid-user-register .next_previous, #pid-user-register #edit-actions--2, #pid-user-register #edit-field-category, #pid-user-register #edit-legal').show();
  }
-
+*/
 // Comment autosubmmit on home
 
 
