@@ -356,7 +356,6 @@ function inviter_invite_content() {
   global $user;
   global $base_url;
   $invite_link = $base_url . '/inviter/register/' . $user->uid;
-  $invite_link = "http://www.beta.pasteonmycity.com";
   $fb_invite_share = 'https://www.facebook.com/dialog/feed?
   app_id=316002271856542&
   link='. $invite_link . '&

@@ -4,7 +4,6 @@
 function pomc_customizations_user_insert(&$edit, $account, $category) {
 $flag = flag_get_flag('follow_users');
 $flag->flag('flag', 1, $account, $skip_permission_check = FALSE); 
-
 }
 
 /*
@@ -203,7 +202,7 @@ foreach($form['category']['#options'] as $tid => $taxonomy) {
 		$output .= '</div>';
 		}
 		else {
-		$output .='<li class="primary-list" id="primary-category primary-All" value = All">Everything</li>';
+		$output .='<li class="primary-list" id="primary-category primary-'.$tid.'" value = "'.$tid.'">'.$taxonomy.'</li>';
 		}
       }
       else {
@@ -218,11 +217,7 @@ foreach($form['category']['#options'] as $tid => $taxonomy) {
 $output .= '</ul>';
 $output .='</div>';
 $form['#suffix'] = $output;
-}
-if($form_id == 'flag_confirm') {
-if($form['actions']['submit']['#value'] == 'Repasted') {
-$form['actions']['submit']['#value'] = 'Ok';
-}
+
 }
 
 if($form_id=='search_block_form') {
@@ -243,7 +238,7 @@ $form['name']['#title'] = Null;
 $form['pass']['#title'] = Null;
 $form['name']['#attributes'] = array('placeholder' => t('Email Address'));
 $form['pass']['#attributes'] = array('placeholder' => t('Password'));
-$form['links']['#markup'] = '<div class="forgot-password-link">Or '.l("Forgot Password?", "user/password").'</div>'; 
+//$form['links']['#markup'] = '<div class="request-link pull-right">'.$login_link['#items'][1].'</div>'; 
 $form['actions']['submit']['#attributes'] = array('class' => Null);
 $form['actions']['submit']['#attributes'] = array('class' => array('btn btn-large btn-primary'));
 // Remove Request New Password from Block form
@@ -252,23 +247,18 @@ $form['actions']['submit']['#attributes'] = array('class' => array('btn btn-larg
 }
 
 if($form_id=='user_register_form') {
-//dsm($form);
-drupal_set_title('Registration');
 $form['Button_first'] = array(
-    '#markup' => '<div id="next_first-split-form">Next >></div>',
-    '#weight' => 6,
+    '#markup' => '<div class="next_first">Next >></div>',
+    '#weight' => 3,
     );
 $form['Buttons_second'] = array(
     '#markup' => '<div class="previous_button"><< Previous</div>',
     '#weight' => 30,
     );
-//define validation function
-$form['#validate'][] = 'my_user_register_validate';
-//overwrite the username help text
-$form['account']['name']['#description'] = 'Username has to be between 5-15 characters long and can only contain letters and numbers';
 }
  if($form_id == 'paste_node_form') {
-$form['field_city']['und']['#default_value'][0] = user_load($user->uid)->field_city['und'][0]['tid'];
+$form['field_city']['und']['#options']['_none'] = taxonomy_term_load(user_load($user->uid)->field_city['und'][0]['tid'])->name;
+$form['field_category']['und']['#options']['_none'] = 'Select a Category';
 $form['actions']['submit']['#value'] = t('Create Paste');
  $form['actions']['cancel'] = array(
       '#type'   => 'submit',
@@ -276,19 +266,24 @@ $form['actions']['submit']['#value'] = t('Create Paste');
       '#access' => TRUE,
       '#weight' => 15,
       '#class' => array('cancel-button'),
-     '#submit' =>  FALSE,
+      '#submit' => array('pomc_customizations_form_cancel', 'node_form_submit_build_node'),
       '#limit_validation_errors' => array(),
     );
 }
 if ($form_id == "profile2_edit_user_profile_form"){
-  //define validation function
-  $form['#validate'][] = 'my_user_register_validate';
-  //overwrite the username help text
-  $form['account']['name']['#description'] = 'Username has to be between 5-15 characters long and can only contain letters and numbers';
-  }
+/*
+drupal_add_js(drupal_get_path("module", "pomc_customizations") . "/js/pomc_customizations.js");
+    drupal_add_js(drupal_get_path("module", "pomc_customizations") . "/js/formToWizard.js");
+   drupal_add_js('jQuery(document).ready(function(){jQuery("#profile2-edit-user-profile-form").formToWizard({submitButton:"edit-submit"})});', array('type' => 'inline', 'scope' => 'footer', 'weight' => 5));
+*/
+}
 
 }
 
+function pomc_customizations_form_cancel($form, &$form_state) {
+ $destination = $_SERVER['HTTP_REFERER'];;
+  drupal_goto($destination);
+}
 
 function get_children_html($children, $taxonomy_name, $tid){
 $html_list = '<li class="primary-list" id="primary-category primary-'.$tid.'" value = "'.$tid.'">'.$taxonomy_name;
@@ -320,34 +315,19 @@ return $html_list;
 //  dpm(taxonomy_get_term_by_name($category));
   $category_id = array_keys(taxonomy_get_term_by_name($category));
   $city_id = array_keys(taxonomy_get_term_by_name($city));
-  $cats = explode(',', $category);
-  $categorylink = '';
-  $dash = 0;
-  foreach ($cats as $category) {
-   $category_id = array_keys(taxonomy_get_term_by_name($category));
-   if ($categorylink !='') {
-   $dash = 1;
-  }
-   if($dash ==1 ) {
-     $categorylink .= ' - ';
-    } 
-    $categorylink .= l($category , "board", array('query' => array('city' => $city_id[0], 'category' => $category_id[0])));
-   
-  }
- // $categorylink = l($category , "board/city=" . $city_id[0]."&category=".$category_id[0]);
+  $categorylink = l($category , "board/city=" . $city_id[0]."&category=".$category_id[0]);
   $description =  $view->style_plugin->rendered_fields[$view->row_index]['body'];
   $nid=$view->style_plugin->rendered_fields[$view->row_index]['nid'];
   $like = flag_get_flag('like');
   $share = flag_get_flag('share');
-  global $user;
-  $likelink =($user->uid) ? flag_create_link('like', $nid) : '<a href="home" title="Login or Register to Like">Like</a>';
-  $sharelink =($user->uid) ? flag_create_link('share', $nid) : '<a href="home" title="Login or Register to Share">Share</a>';
-   $print_form = drupal_get_form("comment_node_paste_form", (object) array('nid' => $nid));
+  $likelink = flag_create_link('like', $nid);
+  $sharelink = flag_create_link('share', $nid);
+  $print_form = drupal_get_form("comment_node_paste_form", (object) array('nid' => $nid));
   hide($print_form['author']);
-  $comment_form = ($user->uid) ? drupal_render($print_form) : '<div><a class="nologin-comment" href="home">Login or Register to comment</a></div>';
-
- $output .= '<div class="column clearfix pull-left"><!--<div class="curl"></div>--><div class="top"><div class="category">'. $categorylink .'<!-- url = category-name/city-name/ --></div></div><div class="mid"><h2 class="title"> '.$title.'</h2><div class="pull-left">by '.$author.'<!-- url = user-name/ --></div><div class="pasteimage">' . $image . '</div><p class="desc">'.$description.'</p><div class="paste-bar clearfix"><div class="pull-left">'.$likelink.' <span id="lightframe"> &bull; </span>'.$sharelink.'</div></div>
-<div class="pull-left paste-stats"><span> ' . $like->get_count($nid) . ' Likes </span><span> &bull; </span><span> '.$share->get_count($nid) .' Shares</span><span> &bull; </span><span class="info clearfix commentcount">' .$commentCount.' <b class="not-comment" ></b></span></div>'. $comment_form .'</div><div class="bot"></div></div>';
+  
+  
+ $output .= '<div class="column clearfix pull-left"><!--<div class="curl"></div>--><div class="top"><div class="category">'. $categorylink .'<!-- url = category-name/city-name/ --></div></div><div class="mid"><h2 class="title"> '.$title.'</h2><div class="pull-left author-name-paste">by '.$author.'<!-- url = user-name/ --></div><div class = "pasteimage">' . $image . '</div><p class="desc">'.$description.'</p><div class="paste-bar clearfix"><div class="pull-left">'.$likelink.' <span id="lightframe"> &bull; </span>'.$sharelink.'</div></div>
+<div class="pull-left paste-stats"><span> ' . $like->get_count($nid) . ' Likes </span><span> &bull; </span><span> '.$share->get_count($nid) .' Shares</span><span> &bull; </span><span class="info clearfix commentcount">' .$commentCount.' <b class="not-comment" ></b></span></div>'. drupal_render($print_form).'</div><div class="bot"></div></div>';
 return $output;
  
  }
@@ -410,7 +390,7 @@ global $user;
 if($user->uid){
 $output = '';
 $output .= '<ul class="nav nav-pills pull-right">';
-//$output .= '<li class="active">'.l("Home", "home").'</li>';
+$output .= '<li class="active">'.l("Home", "home").'</li>';
 $output .= '<li>'.l("Create Paste", "node/add/paste").'</li>';
 $output .= '<li>'.l("Notifications", "notifications").'</li>';
 if(isset(user_load($user->uid)->field_full_name['und'][0]['value'])) {
@@ -422,14 +402,14 @@ $output .= '<ul class="dropdown-menu">';
 $output .=' <li>'.l("Inbox", "messages").'</li>';
 $output .= '<li>'.l("Followers", "user/".$user->uid."/followers").'</li>';
 $output .= '<li>'.l("Following", "user/".$user->uid."/following").'</li>';
-//$output .= '<li>'.l("Invite Friends", "user/invite-friends").'</li>';
+$output .= '<li>'.l("Invite Friends", "user/invite-friends").'</li>';
 $output .= '<li>'.l("Edit Profile", "user/".$user->uid."/edit").'</li>';
 $output .= '<li>'.l("Logout", "user/logout").'</li>';
 $output .='</ul></li></ul>';
 }
 else {
-$output .= '<ul class="pull-right login-but">';
-$output .= '<li class="">'.l("Log In", "user/login",  array("attributes" => array("class" => array("active")))).'</li>';
+$output .= '<ul class="nav nav-pills pull-right">';
+$output .= '<li class="active">'.l("Log In", "user/login",  array("attributes" => array("class" => array("active")))).'</li>';
 $output .="</ul>";
 }
 return $output;                
@@ -441,43 +421,4 @@ function pomc_customizations_admin_paths() {
   );
   return $paths;
 }
-
-function my_user_register_validate($form, &$form_state) {
-
-  $output['error'] = FALSE;
-  $username = $form_state['input']['name'];
-  $password = $form_state['input']['pass']['pass1'];
-
-  if (strlen($username) < 5 || strlen($username) > 15) {
-    $output['error'] = TRUE;
-    $output['msg'] = t('The username has to be between 5 and 15 characters long. ');
-  }
-  if (strpos($username,' ') > 0 || strpos($username,'.') > 0 || strpos($username,'-') > 0 || strpos($username,'_') > 0 || strpos($username, "'") !== FALSE ){
-    $output['error'] = TRUE;
-    $output['msg'] = t('Username cannot contain spaces . - _ ' . chr(39)  );
-  }
-
-//display username errors
-  if ($output['error']){
-    //drupal_set_message( $output['msg'], 'error');
-    form_set_error('name', $output['msg']);
-  }
-}
-
-function pomc_customizations_views_query_alter(&$view, &$query) {
-global $user;
-$user_city = db_select('field_data_field_city', 'dfc')
-  ->fields('dfc', array('field_city_tid'))
-  ->condition('entity_type', 'user')
-  ->condition('entity_id', $user->uid)
-  ->execute()
-  ->fetchAll();
-             if ($view->name == 'dashboard' && $view->current_display =='page_1') {
-        $query->where[4]['conditions'][0]['field'] = 'field_data_field_city.field_city_tid';
-         $query->where[4]['conditions'][0]['value'] = $user_city[0]->field_city_tid;
-         $query->where[4]['conditions'][0]['operator'] = '=';
-     
-         }
-         }
-
 ?>
